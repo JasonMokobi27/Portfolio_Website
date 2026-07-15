@@ -1,0 +1,35 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root { color-scheme: dark; --pad: clamp(16px, 3.2vw, 48px); }
+html, body { height: 100%; }
+body {
+  background: #0E0B08;
+  color: #E8E4DA;
+  font-family: var(--font-serif), Georgia, serif;
+  -webkit-font-smoothing: antialiased;
+}
+/* film-grain veil */
+.grain {
+  position: fixed; inset: 0; pointer-events: none; z-index: 300;
+  mix-blend-mode: overlay; opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+:focus-visible { outline: 2px solid #C2352A; outline-offset: 2px; }
+::selection { background: #C2352A; color: #0E0B08; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+
+/* Mux player: fill the frame, hide chrome (autoplaying muted loop reel) */
+.mux-cover {
+  --controls: none;
+  --media-object-fit: cover;
+  --media-object-position: center;
+}
+
+/* System-font fallback when SKIP_GOOGLE_FONTS=1 (sandbox/CI only) */
+.font-fallback {
+  --font-disp: "Arial Narrow", "Helvetica Neue", sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-mono: "SFMono-Regular", Menlo, Consolas, monospace;
+}
