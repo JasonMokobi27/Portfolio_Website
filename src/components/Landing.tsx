@@ -11,11 +11,13 @@ const ROTATE_MS = 4500;
 
 export default function Landing({
   first,
+  pool,
   headline,
   kicker,
   intro,
 }: {
   first: Project;
+  pool: string[];
   headline: string;
   kicker: string;
   intro: string;
@@ -25,15 +27,15 @@ export default function Landing({
   const [active, setActive] = useState(0);
   const hasClip = Boolean(first.muxPlaybackId);
 
-  // build the background slideshow: real stills if present, else a placeholder frame
+  // build the background slideshow from every project's stills, else a placeholder frame
   useEffect(() => {
-    if (first.stills?.length) {
-      setStills(first.stills.map((s) => (s.startsWith("/") ? s : muxStill(s, 0, 1280))));
+    if (pool.length) {
+      setStills(pool.map((s) => (s.startsWith("/") ? s : muxStill(s, 0, 1280))));
     } else {
       setStills([placeholderStill({ ...first.tone, lift: [10, 6, 2], gain: [1.05, 0.98, 0.86], sat: 0.9, temp: 0.16 }, 1280, 720)]);
     }
     setActive(0);
-  }, [first]);
+  }, [pool, first]);
 
   // rotate through the stills in random order when there's no showreel clip to play instead
   useEffect(() => {
