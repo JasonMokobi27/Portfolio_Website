@@ -85,7 +85,7 @@ export const PROJECTS: Project[] = [
     logline: "Short · a rural homecoming set between the farm and the recording booth",
     look: "",
     credits: { role: "Colourist", year: "2025" },
-    stills: ["/work/back-to-bedwin-farm/back-to-bedwin-farm-03.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-02.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-09.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-05.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-06.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-13.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-10.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-12.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-01.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-11.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-07.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-04.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-08.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-14.jpg"],
+    stills: ["/work/back-to-bedwin-farm/back-to-bedwin-farm-03.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-02.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-09.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-05.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-06.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-13.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-10.jpg", "/work/back-to-bedwin-farm/back-to-bedwin-farm-12.jpg"],
     tone: { scene: "portrait", lift: [0, 0, 2], gain: [1, 1, 1.02], sat: 0.9, temp: -0.04 },
     published: false,
   },
