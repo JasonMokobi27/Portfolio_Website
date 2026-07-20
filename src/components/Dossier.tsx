@@ -41,9 +41,6 @@ export default function Dossier({
             Close ✕
           </button>
 
-          <h3 className="font-disp font-semibold text-[12px] tracking-[.16em] uppercase text-densito mt-6 mb-2.5">The Look</h3>
-          <p className="max-w-[66ch] text-[clamp(15px,1.5vw,18px)]">{project.look}</p>
-
           <h3 className="font-disp font-semibold text-[12px] tracking-[.16em] uppercase text-densito mt-6 mb-2.5">Credits</h3>
           <dl className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-px bg-line border border-line">
             {rows.map(([k, label]) => (

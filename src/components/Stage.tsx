@@ -73,7 +73,7 @@ export default function Stage({ project, nextSlug }: { project: Project; nextSlu
           onClick={() => setOpenDossier(true)}
           className="font-mono text-[11px] tracking-[.1em] uppercase border border-densito/50 text-densito px-4 py-2.5 rounded-[2px] hover:bg-halide/[0.04]"
         >
-          Credits & look
+          Credits
         </button>
         <button
           onClick={() => router.push(`/work/${nextSlug}`)}
