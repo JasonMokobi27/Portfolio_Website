@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Project } from "@/content/projects";
 import { SITE } from "@/content/projects";
 import { chipGradient } from "@/lib/placeholder";
+import { muxStill } from "@/lib/projects";
 
 /** The reel — server-rendered navigation index. Each entry is a real
  *  link to /work/<slug>, so every project is deep-linkable & indexable. */
@@ -22,6 +23,8 @@ export default function Reel({ projects, activeSlug }: { projects: Project[]; ac
       <div className="overflow-y-auto flex-1 min-h-0">
         {projects.map((p, i) => {
           const active = p.slug === activeSlug;
+          const hero = p.stills?.[0];
+          const thumb = hero ? (hero.startsWith("/") ? hero : muxStill(hero, 0, 120)) : undefined;
           return (
             <Link
               key={p.slug}
@@ -31,8 +34,8 @@ export default function Reel({ projects, activeSlug }: { projects: Project[]; ac
             >
               {active && <span className="absolute left-0 top-0 bottom-0 w-[3px] bg-safelight" />}
               <span
-                className="w-[46px] h-[30px] flex-none rounded-[2px] shadow-[inset_0_0_0_1px_rgba(0,0,0,0.5)]"
-                style={{ background: chipGradient(p.tone) }}
+                className="w-[46px] h-[30px] flex-none rounded-[2px] bg-cover bg-center shadow-[inset_0_0_0_1px_rgba(0,0,0,0.5)]"
+                style={thumb ? { backgroundImage: `url(${thumb})` } : { background: chipGradient(p.tone) }}
               />
               <span className="min-w-0">
                 <span className="block font-mono text-[10px] text-densito tracking-[.14em]">R{String(i + 1).padStart(2, "0")}</span>
