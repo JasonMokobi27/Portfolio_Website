@@ -33,7 +33,7 @@ export default function Stage({ project, nextSlug }: { project: Project; nextSlu
         <div>
           <div className="font-disp font-bold text-[clamp(26px,4.2vw,54px)] leading-[.94] tracking-[-.01em]">{project.title}</div>
           <div className="font-serif italic text-halide-dim text-[clamp(14px,1.4vw,18px)] mt-2 max-w-[52ch]">
-            {project.kind} · {project.logline}
+            {project.kind}
           </div>
         </div>
         <div className="font-mono text-[11px] tracking-[.14em] uppercase text-densito text-right flex-none leading-[1.9] whitespace-nowrap max-[820px]:hidden">

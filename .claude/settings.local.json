@@ -4,7 +4,8 @@
       "Bash(npm run:*)",
       "Bash(npm view:*)",
       "Bash(node -e ':*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(grep -n \"tone\\\\|tags\\\\|kind\" src/components/Stage.tsx src/components/Reel.tsx src/app/work/[slug]/page.tsx)"
     ]
   }
 }
