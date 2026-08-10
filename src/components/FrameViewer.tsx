@@ -24,7 +24,7 @@ export default function FrameViewer({
   const hasClip = Boolean(project.muxPlaybackId);
 
   return (
-    <div className="relative flex-1 min-h-0 border border-line bg-black overflow-hidden rounded-[3px] shadow-[0_24px_80px_-30px_rgba(0,0,0,0.9)]">
+    <div className="relative flex-1 min-h-0 max-[820px]:flex-none max-[820px]:aspect-video border border-line bg-black overflow-hidden rounded-[3px] shadow-[0_24px_80px_-30px_rgba(0,0,0,0.9)]">
       {hasClip ? (
         <MuxPlayer
           playbackId={project.muxPlaybackId}
