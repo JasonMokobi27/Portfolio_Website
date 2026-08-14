@@ -129,7 +129,7 @@ export const PROJECTS: Project[] = [
     logline: "Spec commercial · automotive gloss, speed, and reflection",
     look: "Glossy automotive grade — deep, controlled blacks on the paintwork, specular highlights kept crisp and cool, a touch of teal pulled into the environment to set the metal apart from the world around it.",
     credits: { role: "Colourist", year: "2025" },
-    stills: ["/work/alfa-romeo/alfa-romeo-02.jpg", "/work/alfa-romeo/alfa-romeo-01.jpg", "/work/alfa-romeo/alfa-romeo-03.jpg", "/work/alfa-romeo/alfa-romeo-05.jpg"],
+    stills: ["/work/alfa-romeo/alfa-romeo-04.jpg", "/work/alfa-romeo/alfa-romeo-02.jpg", "/work/alfa-romeo/alfa-romeo-01.jpg", "/work/alfa-romeo/alfa-romeo-03.jpg", "/work/alfa-romeo/alfa-romeo-05.jpg"],
     tone: { scene: "window", lift: [-4, -2, 2], gain: [0.98, 1, 1.06], sat: 1.05, temp: -0.1 },
     published: false,
   },
