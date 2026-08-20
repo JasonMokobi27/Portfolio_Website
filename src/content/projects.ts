@@ -190,6 +190,19 @@ export const PROJECTS: Project[] = [
   },
 ];
 
+/* Hand-picked hero stills for the home-page background carousel — the
+   strongest, most appealing frames across projects (composition, grade,
+   variety), full-bleed friendly. Category pages build their own pools. */
+export const HERO_STILLS: string[] = [
+  "/work/lars-mikael/lars-mikael-06.jpg",
+  "/work/love/love-01.jpg",
+  "/work/rockweed/rockweed-12.jpg",
+  "/work/kill-em-now/kill-em-now-02.jpg",
+  "/work/summer-clothing-spec/summer-clothing-spec-01.jpg",
+  "/work/forgotten-city/forgotten-city-01.jpg",
+  "/work/heatwave/heatwave-01.jpg",
+];
+
 /* Site-wide constants pulled from mokobi.digital (all confirmed real). */
 export const SITE = {
   name: "Karabo Jason Mokobi",
