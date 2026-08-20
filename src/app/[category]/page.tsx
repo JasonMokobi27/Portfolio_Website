@@ -13,9 +13,8 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const { category } = await params;
   const cat = getCategory(category);
   if (!cat) return {};
-  const title = `${cat.label} — ${SITE.name}`;
   return {
-    title,
+    title: cat.label,
     description: `${cat.label} graded by ${SITE.name}. ${SITE.role}.`,
     alternates: { canonical: `/${cat.slug}` },
     openGraph: {
