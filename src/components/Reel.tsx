@@ -32,7 +32,7 @@ export default function Reel({ projects, activeSlug, category }: { projects: Pro
       </div>
 
       <div className="overflow-y-auto flex-1 min-h-0">
-        {projects.map((p, i) => {
+        {projects.map((p) => {
           const active = p.slug === activeSlug;
           const hero = p.stills?.[0];
           const thumb = hero ? (hero.startsWith("/") ? hero : muxStill(hero, 0, 120)) : undefined;
@@ -49,9 +49,8 @@ export default function Reel({ projects, activeSlug, category }: { projects: Pro
                 style={thumb ? { backgroundImage: `url(${thumb})` } : { background: chipGradient(p.tone) }}
               />
               <span className="min-w-0">
-                <span className="block font-mono text-[10px] text-densito tracking-[.14em]">R{String(i + 1).padStart(2, "0")}</span>
-                <span className="block font-disp font-semibold text-[13px] tracking-[.01em] truncate mt-0.5">{p.title}</span>
-                <span className="block font-mono text-[10px] text-halide-dim mt-px">{p.credits.year} · {p.kind}</span>
+                <span className="block font-disp font-semibold text-[13px] tracking-[.01em] truncate">{p.title}</span>
+                <span className="block font-mono text-[10px] text-halide-dim mt-0.5">{p.credits.year} · {p.kind}</span>
               </span>
             </Link>
           );

@@ -21,9 +21,8 @@ export default function CategoryNav({ projects }: { projects: Project[] }) {
       </div>
 
       <div className="overflow-y-auto flex-1 min-h-0">
-        {CATEGORIES.map((cat, i) => {
-          const items = projects.filter((p) => cat.kinds.includes(p.kind));
-          const lead = items[0];
+        {CATEGORIES.map((cat) => {
+          const lead = projects.find((p) => cat.kinds.includes(p.kind));
           const hero = lead?.stills?.[0];
           const thumb = hero ? (hero.startsWith("/") ? hero : muxStill(hero, 0, 120)) : undefined;
           return (
@@ -37,11 +36,7 @@ export default function CategoryNav({ projects }: { projects: Project[] }) {
                 style={thumb ? { backgroundImage: `url(${thumb})` } : { background: lead ? chipGradient(lead.tone) : undefined }}
               />
               <span className="min-w-0">
-                <span className="block font-mono text-[10px] text-densito tracking-[.14em]">C{String(i + 1).padStart(2, "0")}</span>
-                <span className="block font-disp font-semibold text-[13px] tracking-[.01em] truncate mt-0.5">{cat.label}</span>
-                <span className="block font-mono text-[10px] text-halide-dim mt-px">
-                  {items.length} {items.length === 1 ? "title" : "titles"}
-                </span>
+                <span className="block font-disp font-semibold text-[14px] tracking-[.01em] truncate">{cat.label}</span>
               </span>
             </Link>
           );
