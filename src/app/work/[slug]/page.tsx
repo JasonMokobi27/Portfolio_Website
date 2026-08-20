@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getProject, getProjects, getSlugs, muxPoster } from "@/lib/projects";
+import { getCategoryOf, getProject, getProjects, getProjectsByCategory, getSlugs, muxPoster } from "@/lib/projects";
 import { SITE } from "@/content/projects";
 import Reel from "@/components/Reel";
 import Stage from "@/components/Stage";
@@ -34,13 +34,15 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const project = getProject(slug);
   if (!project) notFound();
 
-  const all = getProjects();
-  const idx = all.findIndex((p) => p.slug === slug);
-  const nextSlug = all[(idx + 1) % all.length]?.slug ?? slug;
+  const category = getCategoryOf(project);
+  const scope = category ? getProjectsByCategory(category.slug) : getProjects();
+  const list = scope.some((p) => p.slug === slug) ? scope : getProjects();
+  const idx = list.findIndex((p) => p.slug === slug);
+  const nextSlug = list[(idx + 1) % list.length]?.slug ?? slug;
 
   return (
     <div className="grid grid-cols-[clamp(220px,22vw,300px)_1fr] h-[100dvh] max-[820px]:grid-cols-1 max-[820px]:h-auto max-[820px]:min-h-[100dvh]">
-      <Reel projects={all} activeSlug={slug} />
+      <Reel projects={list} activeSlug={slug} category={list === scope ? category : undefined} />
       <Stage project={project} nextSlug={nextSlug} />
     </div>
   );
