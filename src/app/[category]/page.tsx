@@ -49,12 +49,16 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
         <div className="min-w-0">
           <HeroReel stills={stills} segments={stripsForStills(stills)} />
 
-          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 mb-2.5">
-            {cat.label}
-          </h1>
-          <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch] mb-7">{SITE.intro}</p>
+          <section className="mt-7 pt-7 border-t border-line">
+            <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mb-2.5">
+              {cat.label}
+            </h1>
+            <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch]">{SITE.intro}</p>
+          </section>
 
-          <WorkRows projects={items} />
+          <section className="mt-7 pt-7 border-t border-line">
+            <WorkRows projects={items} />
+          </section>
         </div>
       </div>
     </main>

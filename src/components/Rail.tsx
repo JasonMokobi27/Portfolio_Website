@@ -11,7 +11,10 @@ export default function Rail({ active = "all" }: { active?: string }) {
     }`;
 
   return (
-    <nav className="flex flex-col gap-1.5 text-[13px]" aria-label="Sections">
+    <nav
+      className="flex flex-col gap-1.5 text-[13px] border-r border-line pr-8 max-[820px]:border-r-0 max-[820px]:pr-0 max-[820px]:border-b max-[820px]:pb-6"
+      aria-label="Sections"
+    >
       <Link href="/" className="font-disp font-medium text-[15px] leading-[1.3] text-halide">
         {SITE.name}
       </Link>

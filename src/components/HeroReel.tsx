@@ -10,16 +10,17 @@ const ROTATE_MS = 5000;
  *  server so the whole palette table stays out of the client bundle. */
 export default function HeroReel({ stills, segments }: { stills: string[]; segments: string[][] }) {
   const [active, setActive] = useState(0);
-  const [held, setHeld] = useState(false);
 
+  /* Keyed on `active` so picking a segment restarts the clock rather than
+     cutting away a moment later. The reel never stops on its own. */
   useEffect(() => {
-    if (held || stills.length <= 1) return;
-    const id = setInterval(() => setActive((i) => (i + 1) % stills.length), ROTATE_MS);
-    return () => clearInterval(id);
-  }, [held, stills.length]);
+    if (stills.length <= 1) return;
+    const id = setTimeout(() => setActive((i) => (i + 1) % stills.length), ROTATE_MS);
+    return () => clearTimeout(id);
+  }, [active, stills.length]);
 
   return (
-    <div onMouseEnter={() => setHeld(true)} onMouseLeave={() => setHeld(false)}>
+    <div>
       <div className="relative aspect-[16/6.4] max-[820px]:aspect-[16/9] bg-black border border-line rounded-[3px] overflow-hidden">
         {stills.map((src, i) => (
           <div

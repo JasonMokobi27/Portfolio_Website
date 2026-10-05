@@ -15,12 +15,16 @@ export default function Home() {
         <div className="min-w-0">
           <HeroReel stills={HERO_STILLS} segments={stripsForStills(HERO_STILLS)} />
 
-          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 mb-2.5 max-w-[22ch]">
-            {SITE.headline}
-          </h1>
-          <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch] mb-7">{SITE.intro}</p>
+          <section className="mt-7 pt-7 border-t border-line">
+            <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mb-2.5 max-w-[22ch]">
+              {SITE.headline}
+            </h1>
+            <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch]">{SITE.intro}</p>
+          </section>
 
-          <WorkRows projects={projects} />
+          <section className="mt-7 pt-7 border-t border-line">
+            <WorkRows projects={projects} />
+          </section>
         </div>
       </div>
     </main>

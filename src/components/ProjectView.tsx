@@ -81,7 +81,7 @@ export default function ProjectView({
         </div>
       )}
 
-      <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7">
+      <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 pt-7 border-t border-line">
         {project.title}
       </h1>
       <p className="font-mono text-[11px] text-halide-dim mt-1.5">
