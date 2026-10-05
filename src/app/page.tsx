@@ -1,14 +1,27 @@
 import { getProjects } from "@/lib/projects";
 import { SITE, HERO_STILLS } from "@/content/projects";
-import CategoryNav from "@/components/CategoryNav";
-import Landing from "@/components/Landing";
+import Rail from "@/components/Rail";
+import HeroReel from "@/components/HeroReel";
+import WorkRows from "@/components/WorkRows";
 
 export default function Home() {
   const projects = getProjects();
   return (
-    <div className="grid grid-cols-[clamp(220px,22vw,300px)_1fr] h-[100dvh] max-[820px]:grid-cols-1 max-[820px]:h-auto max-[820px]:min-h-[100dvh]">
-      <CategoryNav projects={projects} />
-      <Landing first={projects[0]} pool={HERO_STILLS} headline={SITE.headline} kicker={`${SITE.role} · worldwide`} intro={SITE.intro} />
-    </div>
+    <main className="min-h-[100dvh] p-[var(--pad)]">
+      <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
+        <Rail active="all" />
+
+        <div className="min-w-0">
+          <HeroReel stills={HERO_STILLS} />
+
+          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 mb-2.5 max-w-[22ch]">
+            {SITE.headline}
+          </h1>
+          <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch] mb-7">{SITE.intro}</p>
+
+          <WorkRows projects={projects} />
+        </div>
+      </div>
+    </main>
   );
 }
