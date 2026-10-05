@@ -1,5 +1,5 @@
 /* Fonts are loaded via next/font (self-hosted at build). next/font requires
- * a static top-level import/call so its compiler can statically analyze it —
+ * a static top-level import/call so its compiler can statically analyze it,
  * it cannot be lazily required behind a runtime conditional. In sandboxes or
  * CI without network access to Google Fonts, set SKIP_GOOGLE_FONTS=1 to fall
  * back to system stacks defined in globals.css instead of applying the

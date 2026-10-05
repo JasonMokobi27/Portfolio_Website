@@ -2,7 +2,7 @@
   "name": "mokobi-di",
   "version": "1.0.0",
   "private": true,
-  "description": "Karabo Jason Mokobi — Film Colourist / Remote DI portfolio",
+  "description": "Karabo Jason Mokobi · Film Colourist / Remote DI portfolio",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

@@ -5,18 +5,18 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.domain),
-  title: { default: `${SITE.name} — ${SITE.role}`, template: `%s — ${SITE.name}` },
+  title: { default: `${SITE.name} · ${SITE.role}`, template: `%s · ${SITE.name}` },
   description: SITE.intro,
   keywords: ["colourist", "colorist", "film colour grading", "HDR mastering", "remote DI", "DaVinci Resolve", "DCP finishing", "Dolby Vision"],
   authors: [{ name: SITE.name }],
   openGraph: {
     type: "website",
     url: SITE.domain,
-    title: `${SITE.name} — ${SITE.role}`,
+    title: `${SITE.name} · ${SITE.role}`,
     description: SITE.intro,
     siteName: SITE.name,
   },
-  twitter: { card: "summary_large_image", title: `${SITE.name} — ${SITE.role}`, description: SITE.intro },
+  twitter: { card: "summary_large_image", title: `${SITE.name} · ${SITE.role}`, description: SITE.intro },
   robots: { index: true, follow: true },
 };
 
