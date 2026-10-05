@@ -1,9 +1,16 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getCategory, getCategorySlugs, getProjectsByCategory } from "@/lib/projects";
+import {
+  getCategory,
+  getCategorySlugs,
+  getProjectsByCategory,
+  heroStillsFor,
+} from "@/lib/projects";
 import { SITE } from "@/content/projects";
-import Reel from "@/components/Reel";
-import Landing from "@/components/Landing";
+import { stripsForStills } from "@/lib/palette";
+import Rail from "@/components/Rail";
+import HeroReel from "@/components/HeroReel";
+import WorkRows from "@/components/WorkRows";
 
 export function generateStaticParams() {
   return getCategorySlugs().map((category) => ({ category }));
@@ -32,18 +39,24 @@ export default async function CategoryPage({ params }: { params: Promise<{ categ
   const items = getProjectsByCategory(category);
   if (!items.length) notFound();
 
-  const pool = items.flatMap((p) => p.stills ?? []);
+  const stills = heroStillsFor(items);
 
   return (
-    <div className="grid grid-cols-[clamp(220px,22vw,300px)_1fr] h-[100dvh] max-[820px]:grid-cols-1 max-[820px]:h-auto max-[820px]:min-h-[100dvh]">
-      <Reel projects={items} category={cat} />
-      <Landing
-        first={items[0]}
-        pool={pool}
-        headline={SITE.headline}
-        kicker={`${cat.label} · Selected work`}
-        intro={SITE.intro}
-      />
-    </div>
+    <main className="min-h-[100dvh] p-[var(--pad)]">
+      <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
+        <Rail active={cat.slug} />
+
+        <div className="min-w-0">
+          <HeroReel stills={stills} segments={stripsForStills(stills)} />
+
+          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 mb-2.5">
+            {cat.label}
+          </h1>
+          <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch] mb-7">{SITE.intro}</p>
+
+          <WorkRows projects={items} />
+        </div>
+      </div>
+    </main>
   );
 }

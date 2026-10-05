@@ -2,8 +2,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getCategoryOf, getProject, getProjects, getProjectsByCategory, getSlugs, muxPoster } from "@/lib/projects";
 import { SITE } from "@/content/projects";
-import Reel from "@/components/Reel";
-import Stage from "@/components/Stage";
+import { stripForProject } from "@/lib/palette";
+import Rail from "@/components/Rail";
+import ProjectView from "@/components/ProjectView";
 
 export function generateStaticParams() {
   return getSlugs().map((slug) => ({ slug }));
@@ -14,7 +15,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = getProject(slug);
   if (!p) return {};
   const title = `${p.title} — ${p.kind}`;
-  const description = `${p.credits.role}. ${p.look.slice(0, 150)}…`;
+  const description = p.look || `${p.kind} graded by ${SITE.name}, ${p.credits.year}.`;
   const image = p.muxPlaybackId ? muxPoster(p.muxPlaybackId, p.posterTime ?? 0) : undefined;
   return {
     title,
@@ -38,12 +39,14 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   const scope = category ? getProjectsByCategory(category.slug) : getProjects();
   const list = scope.some((p) => p.slug === slug) ? scope : getProjects();
   const idx = list.findIndex((p) => p.slug === slug);
-  const nextSlug = list[(idx + 1) % list.length]?.slug ?? slug;
+  const next = list[(idx + 1) % list.length] ?? project;
 
   return (
-    <div className="grid grid-cols-[clamp(220px,22vw,300px)_1fr] h-[100dvh] max-[820px]:grid-cols-1 max-[820px]:h-auto max-[820px]:min-h-[100dvh]">
-      <Reel projects={list} activeSlug={slug} category={list === scope ? category : undefined} />
-      <Stage project={project} nextSlug={nextSlug} />
-    </div>
+    <main className="min-h-[100dvh] p-[var(--pad)]">
+      <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
+        <Rail active={category?.slug} />
+        <ProjectView project={project} strip={stripForProject(project)} next={next} />
+      </div>
+    </main>
   );
 }

@@ -4,10 +4,9 @@ import MuxPlayer from "@mux/mux-player-react";
 import type { Project } from "@/content/projects";
 import { muxPoster } from "@/lib/projects";
 
-/** The frame stage. Real Mux clip when a playbackId exists; otherwise the
- *  still passed down from Stage (a real shot, or a graded procedural
- *  placeholder — Stage decides which). Prev/next arrows let you step
- *  through multiple stills when there's no clip yet. */
+/** The frame itself. A YouTube trailer or full film once play is pressed,
+ *  a Mux clip when a playbackId exists, otherwise the still passed down by
+ *  ProjectView. Prev/next arrows step through the stills. */
 export default function FrameViewer({
   project,
   stillSrc,

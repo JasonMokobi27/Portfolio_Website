@@ -1,5 +1,6 @@
 import { getProjects } from "@/lib/projects";
 import { SITE, HERO_STILLS } from "@/content/projects";
+import { stripsForStills } from "@/lib/palette";
 import Rail from "@/components/Rail";
 import HeroReel from "@/components/HeroReel";
 import WorkRows from "@/components/WorkRows";
@@ -12,7 +13,7 @@ export default function Home() {
         <Rail active="all" />
 
         <div className="min-w-0">
-          <HeroReel stills={HERO_STILLS} />
+          <HeroReel stills={HERO_STILLS} segments={stripsForStills(HERO_STILLS)} />
 
           <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 mb-2.5 max-w-[22ch]">
             {SITE.headline}

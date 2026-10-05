@@ -1,4 +1,4 @@
-import { PROJECTS, type Project } from "@/content/projects";
+import { HERO_STILLS, PROJECTS, type Project } from "@/content/projects";
 
 /** Show placeholders in dev, only cleared work in production.
  *  Flip a project's `published: true` in projects.ts to surface it live. */
@@ -43,6 +43,17 @@ export function getProjectsByCategory(slug: string): Project[] {
 
 export function getCategorySlugs(): string[] {
   return CATEGORIES.map((c) => c.slug);
+}
+
+/** Frames for a page's hero carousel: the hand-picked stills belonging to
+ *  these projects first, then the lead still of anything not yet covered. */
+export function heroStillsFor(projects: Project[]): string[] {
+  const theirs = new Set(projects.flatMap((p) => p.stills ?? []));
+  const picked = HERO_STILLS.filter((s) => theirs.has(s));
+  const leads = projects
+    .map((p) => p.stills?.[0])
+    .filter((s): s is string => Boolean(s) && !picked.includes(s!));
+  return [...picked, ...leads];
 }
 
 /** Mux still frame → poster image, no asset upload needed beyond the clip. */

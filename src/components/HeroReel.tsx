@@ -1,17 +1,16 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { stripsForStills } from "@/lib/palette";
 
 const ROTATE_MS = 5000;
 
 /** The reel at the top of the page: a slow crossfade through the strongest
  *  frames, with the colour strip underneath doubling as the scrubber — one
- *  segment per frame, cut from that frame. */
-export default function HeroReel({ stills }: { stills: string[] }) {
+ *  segment per frame, cut from that frame. `segments` is sampled on the
+ *  server so the whole palette table stays out of the client bundle. */
+export default function HeroReel({ stills, segments }: { stills: string[]; segments: string[][] }) {
   const [active, setActive] = useState(0);
   const [held, setHeld] = useState(false);
-  const segments = stripsForStills(stills);
 
   useEffect(() => {
     if (held || stills.length <= 1) return;
