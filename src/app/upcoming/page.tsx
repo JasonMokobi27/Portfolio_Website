@@ -22,12 +22,9 @@ export default function UpcomingPage() {
         <Rail active="upcoming" />
 
         <div className="min-w-0">
-          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mb-2.5">
+          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em]">
             Upcoming
           </h1>
-          <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch]">
-            Graded and delivered, but not out yet. Frames go up once the films do.
-          </p>
 
           {UPCOMING.map((film) => (
             <section key={film.title} className="mt-7 pt-7 border-t border-line max-w-[70ch]">
