@@ -8,7 +8,7 @@ import { muxStill } from "@/lib/projects";
 import ColourStrip from "./ColourStrip";
 import FrameViewer from "./FrameViewer";
 
-/* Shot on / delivered as — the rest of the credit block is the film's crew. */
+/* Shot on / delivered as. The rest of the credit block is the film's crew. */
 const TECH_ROWS: [keyof Project["credits"], string][] = [
   ["format", "Format"],
   ["delivery", "Delivery"],

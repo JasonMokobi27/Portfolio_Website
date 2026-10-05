@@ -9,8 +9,8 @@ const config: Config = {
         grain: "#171310",
         halide: "#E8E4DA",    // silver-halide off-white
         "halide-dim": "#9A968C",
-        safelight: "#C2352A", // darkroom red — accent only
-        densito: "#3A6E7A",   // densitometer cyan — data
+        safelight: "#C2352A", // darkroom red, accent only
+        densito: "#3A6E7A",   // densitometer cyan, data
         line: "rgba(232,228,218,0.14)",
       },
       fontFamily: {

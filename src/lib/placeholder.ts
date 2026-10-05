@@ -70,7 +70,7 @@ export function placeholderStill(tone: Tone, w = 960, h = 540): string {
   return c.toDataURL();
 }
 
-/** CSS gradient roughly matching a tone — used for the tiny reel chips (SSR-safe). */
+/** CSS gradient roughly matching a tone, used for the tiny reel chips (SSR-safe). */
 export function chipGradient(t: Tone): string {
   const m = (v: number) => Math.max(0, Math.min(255, v));
   const a = `rgb(${m(120 * t.gain[0] + t.lift[0] + t.temp * 40)},${m(110 * t.gain[1] + t.lift[1])},${m(100 * t.gain[2] + t.lift[2] - t.temp * 40)})`;

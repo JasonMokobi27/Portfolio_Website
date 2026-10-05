@@ -1,7 +1,7 @@
 /* Cuts a colour strip from every frame in /public/work.
  *
  * Each still is trimmed of any baked-in letterbox/pillarbox bars, then
- * downsampled to a small grid — each surviving pixel becomes one swatch.
+ * downsampled to a small grid: each surviving pixel becomes one swatch.
  * The result is a real sample of the graded image, not an invented palette.
  *
  * Run with:  node scripts/extract-palettes.mjs
@@ -82,7 +82,7 @@ const body = entries
 
 await writeFile(
   OUT,
-  `/* GENERATED — do not edit by hand.
+  `/* GENERATED. Do not edit by hand.
    Run \`node scripts/extract-palettes.mjs\` after adding or changing stills.
 
    Each entry is a strip of swatches sampled straight from the graded frame

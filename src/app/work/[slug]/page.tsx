@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const p = getProject(slug);
   if (!p) return {};
-  const title = `${p.title} — ${p.kind}`;
+  const title = `${p.title} · ${p.kind}`;
   const director = p.crew?.find((c) => c.role.toLowerCase().includes("direct"))?.names.join(", ");
   const description = [
     p.logline !== p.kind ? p.logline : null,
@@ -29,7 +29,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     description,
     alternates: { canonical: `/work/${p.slug}` },
     openGraph: {
-      title: `${p.title} — ${SITE.name}`,
+      title: `${p.title} · ${SITE.name}`,
       description,
       url: `${SITE.domain}/work/${p.slug}`,
       images: image ? [{ url: image, width: 1280, height: 720 }] : undefined,

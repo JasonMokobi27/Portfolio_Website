@@ -25,7 +25,7 @@ export type Credit = {
   year: string;
 };
 
-/* An optional piece of motion for a project — a YouTube trailer or full
+/* An optional piece of motion for a project: a YouTube trailer or full
    film. Stills stay the default view; this plays inside the same frame. */
 export type Video = {
   youtubeId: string;   // the v= id, e.g. "BfBN3K_Iu54"
@@ -54,7 +54,7 @@ export type Project = {
   published?: boolean;          // set true when it's cleared to show live
 };
 
-/* Placeholder look engine — a colour transform applied to a drawn scene,
+/* Placeholder look engine: a colour transform applied to a drawn scene,
    so the site ships zero assets yet shows distinct, in-gamut grades.
    Delete a project's `tone` once it has real stills; nothing else changes. */
 export type Tone = {
@@ -67,7 +67,7 @@ export type Tone = {
 
 export const PROJECTS: Project[] = [
   /* ── Migrated from the previous HTML portfolio build. Loglines are DRAFTS
-     written for review — edit freely before publishing. Crew and cast are
+     written for review, so edit freely before publishing. Crew and cast are
      taken from each film's own credits. Set published:true once cleared.
      Project order and each stills[] array are ranked strongest → weakest
      (lead/hero still first) per a visual-craft review. ── */
@@ -272,7 +272,7 @@ export const PROJECTS: Project[] = [
     slug: "alfa-romeo",
     title: "Alfa Romeo",
     kind: "Commercial",
-    logline: "A spec car commercial — gloss, speed and reflection",
+    logline: "A spec car commercial: gloss, speed and reflection",
     credits: { role: "Colourist", format: "Sony FX3", year: "2025" },
     crew: [
       { role: "Director", names: ["Kyle Greyvenstein"] },
@@ -350,7 +350,7 @@ export const PROJECTS: Project[] = [
   },
 ];
 
-/* Hand-picked hero stills for the home-page background carousel — the
+/* Hand-picked hero stills for the home-page background carousel: the
    strongest, most appealing frames across projects (composition, grade,
    variety), full-bleed friendly. Category pages build their own pools. */
 export const HERO_STILLS: string[] = [
@@ -371,7 +371,7 @@ export const SITE = {
   email: "jason@mokobi.digital",
   headline: "Colour grading for film, music video and commercial work.",
   intro:
-    "I grade from a calibrated suite and work remotely with directors and DPs wherever they are — from early look tests through to the final delivery. Send me some footage and we'll work out the look together.",
+    "I grade from a calibrated suite and work remotely with directors and DPs wherever they are, from early look tests through to the final delivery. Send me some footage and we'll work out the look together.",
   facility: ["DaVinci Resolve", "Apple M4 Max", "Calibrated HDR reference", "SDR · HDR · DCP", "Remote"],
   regions: ["North America", "Europe", "Oceania"],
   links: {

@@ -25,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
     description: `${cat.label} graded by ${SITE.name}. ${SITE.role}.`,
     alternates: { canonical: `/${cat.slug}` },
     openGraph: {
-      title: `${cat.label} — ${SITE.name}`,
+      title: `${cat.label} · ${SITE.name}`,
       url: `${SITE.domain}/${cat.slug}`,
     },
   };

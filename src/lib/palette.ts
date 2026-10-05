@@ -18,7 +18,7 @@ function thin(swatches: string[], max: number): string[] {
 }
 
 /** The whole project read as one colour strip, in the order the stills are
- *  listed — so the strip tracks the film rather than a sorted palette. */
+ *  listed, so the strip tracks the film rather than a sorted palette. */
 export function stripForProject(project: Project, max = 80): string[] {
   const swatches = (project.stills ?? []).flatMap(swatchesForStill);
   return thin(swatches, max);

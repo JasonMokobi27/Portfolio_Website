@@ -1,4 +1,4 @@
-# Karabo Jason Mokobi — Remote DI Portfolio
+# Karabo Jason Mokobi · Remote DI Portfolio
 
 Next.js 15 (App Router) · TypeScript · Tailwind · Mux · deploys to Netlify.
 
@@ -24,7 +24,7 @@ npm run typecheck
 > `SKIP_GOOGLE_FONTS=1 npm run build` to fall back to system fonts. On Netlify
 > and normal local dev, leave it unset so the real typefaces load.
 
-## Add or edit work — ONE file
+## Add or edit work: ONE file
 
 Everything comes from **`src/content/projects.ts`**. Add an object to the
 `PROJECTS` array and you automatically get: a reel card, a page at

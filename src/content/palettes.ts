@@ -1,4 +1,4 @@
-/* GENERATED — do not edit by hand.
+/* GENERATED. Do not edit by hand.
    Run `node scripts/extract-palettes.mjs` after adding or changing stills.
 
    Each entry is a strip of swatches sampled straight from the graded frame

@@ -34,7 +34,7 @@ export default function FrameViewer({
         <iframe
           key={video!.youtubeId}
           src={`https://www.youtube-nocookie.com/embed/${video!.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
-          title={`${project.title} — ${video!.label}`}
+          title={`${project.title} · ${video!.label}`}
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           allowFullScreen
           className="absolute inset-0 w-full h-full border-0"
@@ -58,7 +58,7 @@ export default function FrameViewer({
         />
       )}
 
-      {/* film perforations — stood down while the player owns the frame */}
+      {/* film perforations, stood down while the player owns the frame */}
       {!isPlaying && (
         <>
           <Perf className="top-[5px]" />
@@ -66,7 +66,7 @@ export default function FrameViewer({
         </>
       )}
 
-      {/* play affordance over the still — the motion is one click in */}
+      {/* play affordance over the still, so motion is one click in */}
       {video && !isPlaying && (
         <button
           type="button"

@@ -1,4 +1,4 @@
-/** A run of colour cut from the film itself — each slice is one sample of a
+/** A run of colour cut from the film itself. Each slice is one sample of a
  *  graded frame. Decorative, so it stays out of the accessibility tree. */
 export default function ColourStrip({
   swatches,

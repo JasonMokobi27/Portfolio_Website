@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 const ROTATE_MS = 5000;
 
 /** The reel at the top of the page: a slow crossfade through the strongest
- *  frames, with the colour strip underneath doubling as the scrubber — one
+ *  frames, with the colour strip underneath doubling as the scrubber: one
  *  segment per frame, cut from that frame. `segments` is sampled on the
  *  server so the whole palette table stays out of the client bundle. */
 export default function HeroReel({ stills, segments }: { stills: string[]; segments: string[][] }) {
@@ -31,7 +31,7 @@ export default function HeroReel({ stills, segments }: { stills: string[]; segme
         <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
       </div>
 
-      {/* the strip is the scrubber — one segment per frame */}
+      {/* the strip is the scrubber, one segment per frame */}
       <div className="flex gap-[2px] h-[18px] mt-1.5">
         {segments.map((swatches, i) => (
           <button
