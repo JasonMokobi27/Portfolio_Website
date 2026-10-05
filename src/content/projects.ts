@@ -54,6 +54,20 @@ export type Project = {
   published?: boolean;          // set true when it's cleared to show live
 };
 
+/* Work that is graded and delivered but has no frames cleared for the site
+   yet. It deliberately has no `stills`, no `tone` and no page of its own:
+   nothing here should imply a look the viewer hasn't been shown. All of it
+   shares the one /upcoming page and links out to IMDb for the full record. */
+export type Upcoming = {
+  title: string;
+  kind: string;
+  credits: Credit;       // your own credit, with the year you graded it
+  status: string;        // where the film is now, e.g. "Festival submissions, 2027"
+  crew?: CrewCredit[];
+  cast?: CastCredit[];
+  imdb?: string;
+};
+
 /* Placeholder look engine: a colour transform applied to a drawn scene,
    so the site ships zero assets yet shows distinct, in-gamut grades.
    Delete a project's `tone` once it has real stills; nothing else changes. */
@@ -347,6 +361,73 @@ export const PROJECTS: Project[] = [
     video: { youtubeId: "65m6WkiCbfM", label: "Full film" },
     tone: { scene: "room", lift: [-6, -2, 4], gain: [1.05, 0.98, 1.02], sat: 0.95, temp: -0.05 },
     published: false,
+  },
+];
+
+/* Graded, delivered, not yet cleared to show. Crew and cast are curated down
+   to the principals from each film's own IMDb credits, in the order those
+   pages list them. */
+export const UPCOMING: Upcoming[] = [
+  {
+    title: "Faded Scars",
+    kind: "Feature",
+    credits: { role: "Colourist", year: "2026" },
+    status: "Submitting to festivals, 2027",
+    imdb: "https://www.imdb.com/title/tt38867971/",
+    crew: [
+      { role: "Director", names: ["Jacob Marmott"] },
+      { role: "Writer", names: ["Jacob Marmott"] },
+      { role: "Producer", names: ["Katrina Kearns"] },
+      { role: "Casting director", names: ["Violette Trotter"] },
+      { role: "Production designer", names: ["Collin Linnville"] },
+      { role: "Costume designer", names: ["Karen Boyer"] },
+      { role: "First assistant director", names: ["Sam Millstein"] },
+      { role: "Gaffer", names: ["Jericho Alcantara"] },
+      { role: "Sound mixer", names: ["Christine Ji"] },
+      { role: "Re-recording mixer", names: ["Joseph Webster"] },
+      { role: "Stunt coordinators", names: ["Mark Pettograsso", "Ognjen Topic"] },
+    ],
+    cast: [
+      { name: "McKinzie Scott", as: "Mask 2" },
+      { name: "Lou Martini Jr." },
+      { name: "Tyler Noble" },
+      { name: "Jacob Marmott", as: "Jason" },
+      { name: "Carolina Burdo Windsor", as: "Julissa" },
+      { name: "Lady Lipka", as: "Coworker" },
+      { name: "Jérémy Falconetti", as: "Judge" },
+    ],
+  },
+  {
+    title: "The Dark Domain: Mickey vs Winnie",
+    kind: "Feature",
+    credits: { role: "Colourist", year: "2026" },
+    status: "Confirming distribution, 2027",
+    imdb: "https://www.imdb.com/title/tt32261859/",
+    crew: [
+      { role: "Director", names: ["Glenn Douglas Packard"] },
+      { role: "Writers", names: ["Rachel Carter", "Glenn Douglas Packard"] },
+      { role: "Producers", names: ["Rachel Carter", "Glenn Douglas Packard"] },
+      {
+        role: "Executive producers",
+        names: ["Ryan Boni", "Noreen Marriott", "Derek Nelson", "Slade Stinnett"],
+      },
+      { role: "Cinematographer", names: ["Andy Patch"] },
+      { role: "Editor", names: ["Max Partain"] },
+      { role: "Costume designer", names: ["Tessa Hawkes"] },
+      { role: "Prosthetic makeup", names: ["Daniel Phillips"] },
+      { role: "Visual effects", names: ["Brendan John Jones"] },
+      { role: "Re-recording mixer", names: ["Dante Winkler"] },
+    ],
+    cast: [
+      { name: "Daniel Wilkinson", as: "William 'The Rat' Martin / Dark Mickey" },
+      { name: "Chris Boudreaux", as: "Buster Jones" },
+      { name: "Givanni Gotay", as: "Dark Winnie" },
+      { name: "Lindsey Dresbach", as: "Marlow" },
+      { name: "Rachel Carter", as: "Mama J" },
+      { name: "Dominick Ficco", as: "Max" },
+      { name: "Fayna Sanchez", as: "Clare" },
+      { name: "Robert Laenen", as: "Clay" },
+    ],
   },
 ];
 

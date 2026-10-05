@@ -29,6 +29,9 @@ export default function Rail({ active = "all" }: { active?: string }) {
             {cat.label}
           </Link>
         ))}
+        <Link href="/upcoming" className={link(active === "upcoming")}>
+          Upcoming
+        </Link>
       </div>
 
       <a

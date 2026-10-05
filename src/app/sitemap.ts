@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly" as const,
       priority: 0.9,
     })),
+    { url: `${SITE.domain}/upcoming`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     ...getSlugs().map((slug) => ({
       url: `${SITE.domain}/work/${slug}`,
       lastModified: now,
