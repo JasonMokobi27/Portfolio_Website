@@ -2,20 +2,16 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { Project } from "@/content/projects";
+import { SITE, type Project } from "@/content/projects";
 import { placeholderStill } from "@/lib/placeholder";
 import { muxStill } from "@/lib/projects";
 import ColourStrip from "./ColourStrip";
 import FrameViewer from "./FrameViewer";
 
-const CREDIT_ROWS: [keyof Project["credits"], string][] = [
-  ["director", "Director"],
-  ["dp", "DP"],
-  ["production", "Production"],
-  ["role", "Role"],
+/* Shot on / delivered as — the rest of the credit block is the film's crew. */
+const TECH_ROWS: [keyof Project["credits"], string][] = [
   ["format", "Format"],
   ["delivery", "Delivery"],
-  ["year", "Year"],
 ];
 
 /** A single project: the frame first, its own colour strip underneath, then
@@ -44,7 +40,7 @@ export default function ProjectView({
     setPlaying(false);
   }, [project]);
 
-  const credits = CREDIT_ROWS.filter(([key]) => project.credits[key]);
+  const tech = TECH_ROWS.filter(([key]) => project.credits[key]);
 
   return (
     <div className="min-w-0">
@@ -95,9 +91,6 @@ export default function ProjectView({
       {project.logline && project.logline !== project.kind && (
         <p className="text-[15px] leading-[1.55] mt-4 max-w-[58ch]">{project.logline}</p>
       )}
-      {project.look && (
-        <p className="text-[15px] leading-[1.55] text-halide-dim mt-3 max-w-[58ch]">{project.look}</p>
-      )}
 
       <div className="flex gap-2.5 items-center mt-7">
         {project.video && (
@@ -127,14 +120,48 @@ export default function ProjectView({
         </Link>
       </div>
 
-      <dl className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-x-6 gap-y-3.5 mt-8 pt-6 border-t border-line max-w-[58ch]">
-        {credits.map(([key, label]) => (
-          <div key={key}>
-            <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{label}</dt>
-            <dd className="font-disp text-[14px] mt-1">{project.credits[key]}</dd>
+      <div className="mt-8 pt-6 border-t border-line max-w-[70ch]">
+        <dl className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-x-8 gap-y-4">
+          <div>
+            <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
+              {project.credits.role}
+            </dt>
+            <dd className="font-disp text-[14px] mt-1">{SITE.name}</dd>
           </div>
-        ))}
-      </dl>
+          {(project.crew ?? []).map((line) => (
+            <div key={line.role}>
+              <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{line.role}</dt>
+              <dd className="font-disp text-[14px] mt-1">{line.names.join(", ")}</dd>
+            </div>
+          ))}
+          {tech.map(([key, label]) => (
+            <div key={key}>
+              <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{label}</dt>
+              <dd className="font-disp text-[14px] mt-1">{project.credits[key]}</dd>
+            </div>
+          ))}
+        </dl>
+
+        {project.cast?.length ? (
+          <div className="mt-7">
+            <h2 className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">Cast</h2>
+            <p className="font-disp text-[14px] leading-[1.6] mt-1.5">
+              {project.cast.map((c) => (c.as ? `${c.name} (${c.as})` : c.name)).join(" · ")}
+            </p>
+          </div>
+        ) : null}
+
+        {project.imdb && (
+          <a
+            href={project.imdb}
+            target="_blank"
+            rel="noopener"
+            className="inline-block font-mono text-[11px] tracking-[.1em] uppercase text-densito mt-7 hover:text-halide transition-colors"
+          >
+            Full credits on IMDb ↗
+          </a>
+        )}
+      </div>
     </div>
   );
 }

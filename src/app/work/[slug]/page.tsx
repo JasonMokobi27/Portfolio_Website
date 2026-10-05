@@ -15,7 +15,14 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = getProject(slug);
   if (!p) return {};
   const title = `${p.title} — ${p.kind}`;
-  const description = p.look || `${p.kind} graded by ${SITE.name}, ${p.credits.year}.`;
+  const director = p.crew?.find((c) => c.role.toLowerCase().includes("direct"))?.names.join(", ");
+  const description = [
+    p.logline !== p.kind ? p.logline : null,
+    director ? `Directed by ${director}.` : null,
+    `${p.credits.role}: ${SITE.name}.`,
+  ]
+    .filter(Boolean)
+    .join(" ");
   const image = p.muxPlaybackId ? muxPoster(p.muxPlaybackId, p.posterTime ?? 0) : undefined;
   return {
     title,
