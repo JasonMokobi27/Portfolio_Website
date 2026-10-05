@@ -1,8 +1,12 @@
 "use client";
 
-import MuxPlayer from "@mux/mux-player-react";
+import dynamic from "next/dynamic";
 import type { Project } from "@/content/projects";
 import { muxPoster } from "@/lib/projects";
+
+/* The Mux player is ~295kB and no project uses a clip yet, so it only loads
+   if one actually has a playbackId. */
+const MuxPlayer = dynamic(() => import("@mux/mux-player-react"), { ssr: false });
 
 /** The frame itself. A YouTube trailer or full film once play is pressed,
  *  a Mux clip when a playbackId exists, otherwise the still passed down by
