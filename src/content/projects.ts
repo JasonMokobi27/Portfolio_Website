@@ -25,6 +25,13 @@ export type Credit = {
   year: string;
 };
 
+/* An optional piece of motion for a project — a YouTube trailer or full
+   film. Stills stay the default view; this plays inside the same frame. */
+export type Video = {
+  youtubeId: string;   // the v= id, e.g. "BfBN3K_Iu54"
+  label: string;       // button text, e.g. "Trailer" / "Full film"
+};
+
 export type Project = {
   slug: string;                 // URL: /work/<slug>
   title: string;
@@ -35,6 +42,7 @@ export type Project = {
   muxPlaybackId?: string;       // Mux playback id for the reel clip
   posterTime?: number;          // seconds into the clip to freeze for the poster
   stills?: string[];            // Mux still ids OR /public paths for the contact strip
+  video?: Video;                // optional YouTube trailer / full film
   tone: Tone;                   // procedural placeholder look (used until real assets land)
   published?: boolean;          // set true when it's cleared to show live
 };
@@ -64,6 +72,7 @@ export const PROJECTS: Project[] = [
     look: "Cold Scandinavian light — desaturated blues and greys through the exteriors, skin protected and kept honest against the chill, contrast restrained to hold the show's slower, observational rhythm across episodes.",
     credits: { role: "Colourist", year: "2026" },
     stills: ["/work/lars-mikael/lars-mikael-06.jpg", "/work/lars-mikael/lars-mikael-05.jpg", "/work/lars-mikael/lars-mikael-01.jpg", "/work/lars-mikael/lars-mikael-03.jpg", "/work/lars-mikael/lars-mikael-07.jpg", "/work/lars-mikael/lars-mikael-08.jpg", "/work/lars-mikael/lars-mikael-02.jpg", "/work/lars-mikael/lars-mikael-04.jpg", "/work/lars-mikael/lars-mikael-16.jpg", "/work/lars-mikael/lars-mikael-19.jpg", "/work/lars-mikael/lars-mikael-11.jpg", "/work/lars-mikael/lars-mikael-12.jpg", "/work/lars-mikael/lars-mikael-13.jpg", "/work/lars-mikael/lars-mikael-18.jpg", "/work/lars-mikael/lars-mikael-15.jpg", "/work/lars-mikael/lars-mikael-10.jpg"],
+    video: { youtubeId: "JkX97ebXzk0", label: "Trailer" },
     tone: { scene: "room", lift: [-2, 0, 6], gain: [0.96, 1, 1.04], sat: 0.85, temp: -0.06 },
     published: false,
   },
@@ -75,6 +84,7 @@ export const PROJECTS: Project[] = [
     look: "",
     credits: { role: "Colourist", year: "2026" },
     stills: ["/work/rockweed/rockweed-12.jpg", "/work/rockweed/rockweed-32.jpg", "/work/rockweed/rockweed-11.jpg", "/work/rockweed/rockweed-23.jpg", "/work/rockweed/rockweed-17.jpg", "/work/rockweed/rockweed-15.jpg", "/work/rockweed/rockweed-21.jpg", "/work/rockweed/rockweed-35.jpg", "/work/rockweed/rockweed-09.jpg", "/work/rockweed/rockweed-19.jpg", "/work/rockweed/rockweed-20.jpg", "/work/rockweed/rockweed-16.jpg", "/work/rockweed/rockweed-18.jpg", "/work/rockweed/rockweed-07.jpg", "/work/rockweed/rockweed-28.jpg", "/work/rockweed/rockweed-04.jpg", "/work/rockweed/rockweed-30.jpg", "/work/rockweed/rockweed-31.jpg"],
+    video: { youtubeId: "BfBN3K_Iu54", label: "Trailer" },
     tone: { scene: "coast", lift: [-4, 0, 6], gain: [0.94, 0.98, 1.06], sat: 0.9, temp: -0.08 },
     published: false,
   },
@@ -174,6 +184,7 @@ export const PROJECTS: Project[] = [
     look: "Sun-scorched summer heat — highlights allowed to bloom and clip a little for a shimmering-air feel, saturation pushed in the greens with skin kept golden, contrast held high enough to feel the heat rather than just see it.",
     credits: { role: "Editor & Colourist", format: "Panasonic Lumix", year: "2025" },
     stills: ["/work/heatwave/heatwave-01.jpg", "/work/heatwave/heatwave-04.jpg", "/work/heatwave/heatwave-08.jpg", "/work/heatwave/heatwave-03.jpg", "/work/heatwave/heatwave-07.jpg", "/work/heatwave/heatwave-06.jpg", "/work/heatwave/heatwave-05.jpg", "/work/heatwave/heatwave-02.jpg", "/work/heatwave/heatwave-17.jpg", "/work/heatwave/heatwave-12.jpg", "/work/heatwave/heatwave-16.jpg", "/work/heatwave/heatwave-15.jpg", "/work/heatwave/heatwave-14.jpg", "/work/heatwave/heatwave-11.jpg"],
+    video: { youtubeId: "TnYCQjxwAW4", label: "Full film" },
     tone: { scene: "window", lift: [6, 2, -4], gain: [1.1, 1.02, 0.86], sat: 1.1, temp: 0.2 },
     published: false,
   },
@@ -185,6 +196,7 @@ export const PROJECTS: Project[] = [
     look: "High-contrast pulp noir — blacks crushed hard with a cold steel bias, hot practical neons left to bloom instead of tamed, skin held warm against a desaturated world so the violence reads in colour. Grain pushed up in the shadows for a grindhouse bite.",
     credits: { role: "Colourist", format: "Sony FX3", year: "2025" },
     stills: ["/work/kill-em-now/kill-em-now-02.jpg", "/work/kill-em-now/kill-em-now-08.jpg", "/work/kill-em-now/kill-em-now-05.jpg", "/work/kill-em-now/kill-em-now-03.jpg", "/work/kill-em-now/kill-em-now-01.jpg", "/work/kill-em-now/kill-em-now-07.jpg", "/work/kill-em-now/kill-em-now-06.jpg", "/work/kill-em-now/kill-em-now-04.jpg", "/work/kill-em-now/kill-em-now-12.jpg", "/work/kill-em-now/kill-em-now-14.jpg", "/work/kill-em-now/kill-em-now-16.jpg", "/work/kill-em-now/kill-em-now-18.jpg", "/work/kill-em-now/kill-em-now-10.jpg", "/work/kill-em-now/kill-em-now-17.jpg", "/work/kill-em-now/kill-em-now-09.jpg", "/work/kill-em-now/kill-em-now-20.jpg", "/work/kill-em-now/kill-em-now-11.jpg", "/work/kill-em-now/kill-em-now-22.jpg"],
+    video: { youtubeId: "65m6WkiCbfM", label: "Full film" },
     tone: { scene: "room", lift: [-6, -2, 4], gain: [1.05, 0.98, 1.02], sat: 0.95, temp: -0.05 },
     published: false,
   },

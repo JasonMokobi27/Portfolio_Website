@@ -12,6 +12,7 @@ export default function Stage({ project, nextSlug }: { project: Project; nextSlu
   const [openDossier, setOpenDossier] = useState(false);
   const [thumbs, setThumbs] = useState<string[]>([]);
   const [activeStill, setActiveStill] = useState(0);
+  const [playing, setPlaying] = useState(false);
   const router = useRouter();
 
   // build contact-strip thumbnails: real Mux stills if present, else placeholders
@@ -23,6 +24,7 @@ export default function Stage({ project, nextSlug }: { project: Project; nextSlu
     }
     setOpenDossier(false);
     setActiveStill(0);
+    setPlaying(false);
   }, [project]);
 
   const showNav = !project.muxPlaybackId && thumbs.length > 1;
@@ -50,17 +52,22 @@ export default function Stage({ project, nextSlug }: { project: Project; nextSlu
           showNav={showNav}
           onPrev={() => setActiveStill((i) => (i - 1 + thumbs.length) % thumbs.length)}
           onNext={() => setActiveStill((i) => (i + 1) % thumbs.length)}
+          playing={playing}
+          onPlay={() => setPlaying(true)}
         />
         <div className="flex gap-1.5 mt-2.5 h-[58px] flex-none">
           {thumbs.map((src, i) => (
             <button
               key={i}
               type="button"
-              onClick={() => setActiveStill(i)}
+              onClick={() => {
+                setActiveStill(i);
+                setPlaying(false);
+              }}
               aria-label={`Show still ${i + 1}`}
-              aria-current={i === activeStill}
+              aria-current={!playing && i === activeStill}
               className={`flex-1 border rounded-[2px] overflow-hidden bg-black bg-cover bg-center transition-opacity ${
-                i === activeStill ? "border-safelight opacity-100" : "border-line opacity-60 hover:opacity-90"
+                !playing && i === activeStill ? "border-safelight opacity-100" : "border-line opacity-60 hover:opacity-90"
               }`}
               style={{ backgroundImage: `url(${src})` }}
             />
@@ -69,6 +76,21 @@ export default function Stage({ project, nextSlug }: { project: Project; nextSlu
       </div>
 
       <div className="p-[var(--pad)] pt-1.5 flex gap-2.5 items-center">
+        {project.video && (
+          <button
+            onClick={() => setPlaying((v) => !v)}
+            className="font-mono text-[11px] tracking-[.1em] uppercase border border-safelight/60 text-halide px-4 py-2.5 rounded-[2px] flex items-center gap-2 hover:border-safelight hover:bg-safelight/[0.08]"
+          >
+            {playing ? (
+              "Back to stills"
+            ) : (
+              <>
+                <i className="block w-0 h-0 border-y-[5px] border-y-transparent border-l-[8px] border-l-safelight" aria-hidden />
+                {project.video.label}
+              </>
+            )}
+          </button>
+        )}
         <button
           onClick={() => setOpenDossier(true)}
           className="font-mono text-[11px] tracking-[.1em] uppercase border border-densito/50 text-densito px-4 py-2.5 rounded-[2px] hover:bg-halide/[0.04]"

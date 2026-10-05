@@ -14,18 +14,33 @@ export default function FrameViewer({
   showNav,
   onPrev,
   onNext,
+  playing,
+  onPlay,
 }: {
   project: Project;
   stillSrc?: string;
   showNav?: boolean;
   onPrev?: () => void;
   onNext?: () => void;
+  playing?: boolean;
+  onPlay?: () => void;
 }) {
   const hasClip = Boolean(project.muxPlaybackId);
+  const video = project.video;
+  const isPlaying = Boolean(playing && video);
 
   return (
     <div className="relative flex-1 min-h-0 max-[820px]:flex-none max-[820px]:aspect-video border border-line bg-black overflow-hidden rounded-[3px] shadow-[0_24px_80px_-30px_rgba(0,0,0,0.9)]">
-      {hasClip ? (
+      {isPlaying ? (
+        <iframe
+          key={video!.youtubeId}
+          src={`https://www.youtube-nocookie.com/embed/${video!.youtubeId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`}
+          title={`${project.title} — ${video!.label}`}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowFullScreen
+          className="absolute inset-0 w-full h-full border-0"
+        />
+      ) : hasClip ? (
         <MuxPlayer
           playbackId={project.muxPlaybackId}
           poster={muxPoster(project.muxPlaybackId!, project.posterTime ?? 0)}
@@ -44,17 +59,36 @@ export default function FrameViewer({
         />
       )}
 
-      {/* film perforations */}
-      <Perf className="top-[5px]" />
-      <Perf className="bottom-[5px]" />
+      {/* film perforations — stood down while the player owns the frame */}
+      {!isPlaying && (
+        <>
+          <Perf className="top-[5px]" />
+          <Perf className="bottom-[5px]" />
+        </>
+      )}
 
-      {!hasClip && showNav && (
+      {/* play affordance over the still — the motion is one click in */}
+      {video && !isPlaying && (
+        <button
+          type="button"
+          onClick={onPlay}
+          aria-label={`Play ${video.label.toLowerCase()}`}
+          className="absolute inset-0 z-[7] flex items-center justify-center group bg-ink/0 hover:bg-ink/25 transition-colors"
+        >
+          <span className="flex items-center gap-2.5 font-mono text-[11px] tracking-[.14em] uppercase text-halide px-4 py-3 rounded-[2px] bg-ink/55 backdrop-blur-[3px] border border-halide/25 group-hover:border-safelight transition-colors">
+            <i className="block w-0 h-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-safelight" aria-hidden />
+            {video.label}
+          </span>
+        </button>
+      )}
+
+      {!hasClip && !isPlaying && showNav && (
         <>
           <button
             type="button"
             onClick={onPrev}
             aria-label="Previous still"
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-[6] w-9 h-9 flex items-center justify-center rounded-full bg-ink/50 backdrop-blur-[3px] text-halide text-lg hover:bg-ink/70"
+            className="absolute left-3 top-1/2 -translate-y-1/2 z-[9] w-9 h-9 flex items-center justify-center rounded-full bg-ink/50 backdrop-blur-[3px] text-halide text-lg hover:bg-ink/70"
           >
             ‹
           </button>
@@ -62,7 +96,7 @@ export default function FrameViewer({
             type="button"
             onClick={onNext}
             aria-label="Next still"
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-[6] w-9 h-9 flex items-center justify-center rounded-full bg-ink/50 backdrop-blur-[3px] text-halide text-lg hover:bg-ink/70"
+            className="absolute right-3 top-1/2 -translate-y-1/2 z-[9] w-9 h-9 flex items-center justify-center rounded-full bg-ink/50 backdrop-blur-[3px] text-halide text-lg hover:bg-ink/70"
           >
             ›
           </button>
@@ -70,16 +104,18 @@ export default function FrameViewer({
       )}
 
       {/* motion / still badge */}
-      <span className="absolute top-3.5 left-4 z-[5] font-mono text-[10px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-[2px] text-halide bg-ink/50 backdrop-blur-[3px]">
-        {hasClip ? (
-          <>
-            <i className="inline-block w-1.5 h-1.5 rounded-full bg-safelight mr-1.5 align-middle animate-pulse" />
-            Motion
-          </>
-        ) : (
-          "Still"
-        )}
-      </span>
+      {!isPlaying && (
+        <span className="absolute top-3.5 left-4 z-[8] font-mono text-[10px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-[2px] text-halide bg-ink/50 backdrop-blur-[3px] pointer-events-none">
+          {hasClip ? (
+            <>
+              <i className="inline-block w-1.5 h-1.5 rounded-full bg-safelight mr-1.5 align-middle animate-pulse" />
+              Motion
+            </>
+          ) : (
+            "Still"
+          )}
+        </span>
+      )}
     </div>
   );
 }
