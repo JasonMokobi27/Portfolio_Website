@@ -62,7 +62,6 @@ export type Upcoming = {
   title: string;
   kind: string;
   credits: Credit;       // your own credit, with the year you graded it
-  status: string;        // where the film is now, e.g. "Festival submissions, 2027"
   crew?: CrewCredit[];
   cast?: CastCredit[];
   imdb?: string;
@@ -372,7 +371,6 @@ export const UPCOMING: Upcoming[] = [
     title: "Faded Scars",
     kind: "Feature",
     credits: { role: "Colourist", year: "2026" },
-    status: "Submitting to festivals, 2027",
     imdb: "https://www.imdb.com/title/tt38867971/",
     crew: [
       { role: "Director", names: ["Jacob Marmott"] },
@@ -401,7 +399,6 @@ export const UPCOMING: Upcoming[] = [
     title: "The Dark Domain: Mickey vs Winnie",
     kind: "Feature",
     credits: { role: "Colourist", year: "2026" },
-    status: "Confirming distribution, 2027",
     imdb: "https://www.imdb.com/title/tt32261859/",
     crew: [
       { role: "Director", names: ["Glenn Douglas Packard"] },

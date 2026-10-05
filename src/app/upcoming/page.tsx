@@ -35,10 +35,6 @@ export default function UpcomingPage() {
               <p className="font-mono text-[11px] text-halide-dim mt-1.5">
                 Graded {film.credits.year}, {film.kind.toLowerCase()}
               </p>
-              <p className="font-mono text-[11px] tracking-[.1em] uppercase text-densito mt-1.5">
-                {film.status}
-              </p>
-
               <dl className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-x-8 gap-y-4 mt-6">
                 <div>
                   <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
