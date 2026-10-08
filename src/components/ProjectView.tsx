@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { SITE, type Project } from "@/content/projects";
 import { placeholderStill } from "@/lib/placeholder";
-import { muxStill } from "@/lib/projects";
+import { getCategoryOf, muxStill } from "@/lib/projects";
 import ColourStrip from "./ColourStrip";
 import FrameViewer from "./FrameViewer";
 
@@ -41,20 +41,28 @@ export default function ProjectView({
   }, [project]);
 
   const tech = TECH_ROWS.filter(([key]) => project.credits[key]);
+  const category = getCategoryOf(project);
 
   return (
     <div className="min-w-0">
-      <div className="flex aspect-[16/8] max-[820px]:aspect-video">
-        <FrameViewer
-          project={project}
-          stillSrc={thumbs[active]}
-          showNav={!project.muxPlaybackId && thumbs.length > 1}
-          onPrev={() => setActive((i) => (i - 1 + thumbs.length) % thumbs.length)}
-          onNext={() => setActive((i) => (i + 1) % thumbs.length)}
-          playing={playing}
-          onPlay={() => setPlaying(true)}
-        />
-      </div>
+      {/* A way back that doesn't depend on the browser's own back button. */}
+      <Link
+        href={category ? `/${category.slug}` : "/"}
+        className="inline-flex items-center gap-2 mb-3.5 min-h-[44px] font-mono text-[11px] tracking-[.1em] uppercase text-halide-dim border border-line rounded-[2px] px-3.5 hover:text-halide hover:border-halide transition-colors"
+      >
+        <span aria-hidden>←</span>
+        Back to {category?.label ?? "all work"}
+      </Link>
+
+      <FrameViewer
+        project={project}
+        stillSrc={thumbs[active]}
+        showNav={!project.muxPlaybackId && thumbs.length > 1}
+        onPrev={() => setActive((i) => (i - 1 + thumbs.length) % thumbs.length)}
+        onNext={() => setActive((i) => (i + 1) % thumbs.length)}
+        playing={playing}
+        onPlay={() => setPlaying(true)}
+      />
 
       <ColourStrip swatches={strip} className="h-[14px] mt-1.5" />
 

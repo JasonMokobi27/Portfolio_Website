@@ -32,8 +32,11 @@ export default function FrameViewer({
   const video = project.video;
   const isPlaying = Boolean(playing && video);
 
+  /* The frame owns its own ratio off a definite width. Leaving the width to be
+     inferred from flex-basis plus aspect-ratio collapsed it to a sliver in
+     Safari, since every child here is absolutely positioned. */
   return (
-    <div className="relative flex-1 min-h-0 max-[820px]:flex-none max-[820px]:aspect-video border border-line bg-black overflow-hidden rounded-[3px] shadow-[0_24px_80px_-30px_rgba(0,0,0,0.9)]">
+    <div className="relative w-full aspect-[16/8] max-[820px]:aspect-video border border-line bg-black overflow-hidden rounded-[3px] shadow-[0_24px_80px_-30px_rgba(0,0,0,0.9)]">
       {isPlaying ? (
         <iframe
           key={video!.youtubeId}

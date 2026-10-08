@@ -14,8 +14,18 @@ export default function WorkRows({ projects }: { projects: Project[] }) {
           className="group grid grid-cols-[160px_minmax(0,1fr)] max-[560px]:grid-cols-1 gap-3 max-[560px]:gap-1.5 items-center rounded-[3px] -mx-2 px-2 py-1.5 transition-colors hover:bg-halide/[0.04]"
         >
           <span className="min-w-0">
-            <span className="block font-disp text-[14px] leading-[1.2] truncate group-hover:text-halide transition-colors">
-              {project.title}
+            {/* The arrow is the only cue that a row leads somewhere once there
+                is no pointer to hover with. */}
+            <span className="flex items-baseline gap-1.5">
+              <span className="font-disp text-[14px] leading-[1.2] truncate group-hover:text-halide transition-colors">
+                {project.title}
+              </span>
+              <span
+                aria-hidden
+                className="font-mono text-[11px] text-halide-dim group-hover:text-safelight transition-colors"
+              >
+                →
+              </span>
             </span>
             <span className="block font-mono text-[11px] text-halide-dim">
               {project.credits.year}, {project.kind.toLowerCase()}
