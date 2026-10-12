@@ -28,6 +28,9 @@ export default function Contact({ className = "" }: { className?: string }) {
 
       <a
         href={`mailto:${SITE.email}?subject=${encodeURIComponent("Grading enquiry")}`}
+        /* The break hint splits the text node, which puts a space in the name a
+           screen reader reads out. Say the address once, as written. */
+        aria-label={SITE.email}
         className="inline-flex items-center min-h-[44px] font-disp text-[14px] text-halide underline underline-offset-[4px] decoration-halide/40 hover:decoration-halide transition-colors"
       >
         {user}@<wbr />
