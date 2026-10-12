@@ -43,12 +43,24 @@ export default function Rail({ active = "all" }: { active?: string }) {
         </Link>
       </div>
 
-      <a
-        href={`mailto:${SITE.email}`}
-        className="mt-5 max-[820px]:mt-3 font-disp text-halide underline underline-offset-[3px] decoration-halide/35 hover:decoration-safelight hover:text-safelight transition-colors"
-      >
-        {SITE.email}
-      </a>
+      {/* The address alone left the next step implied. The labelled action names
+          it, and the address stays underneath for anyone who would rather copy
+          it than hand over to a mail client. */}
+      <div className="mt-5 max-[820px]:mt-3 flex flex-col items-start gap-2">
+        <a
+          href={`mailto:${SITE.email}?subject=${encodeURIComponent("Grading enquiry")}`}
+          className="w-full max-[820px]:w-auto inline-flex items-center justify-between gap-2 min-h-[44px] py-2 font-mono text-[11px] leading-[1.4] tracking-[.1em] uppercase text-halide border border-safelight/60 rounded-[2px] px-3 hover:border-safelight hover:bg-safelight/[0.08] transition-colors"
+        >
+          Enquire
+          <span aria-hidden>→</span>
+        </a>
+        <a
+          href={`mailto:${SITE.email}`}
+          className="font-disp text-halide-dim underline underline-offset-[3px] decoration-halide/25 hover:text-halide hover:decoration-halide/60 transition-colors"
+        >
+          {SITE.email}
+        </a>
+      </div>
     </nav>
   );
 }
