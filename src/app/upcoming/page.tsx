@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SITE, UPCOMING } from "@/content/projects";
 import Rail from "@/components/Rail";
+import Contact from "@/components/Contact";
 
 export const metadata: Metadata = {
   title: "Upcoming",
@@ -71,6 +72,8 @@ export default function UpcomingPage() {
             </section>
           ))}
         </div>
+
+        <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
       </div>
     </main>
   );

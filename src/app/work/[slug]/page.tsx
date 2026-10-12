@@ -5,6 +5,7 @@ import { SITE } from "@/content/projects";
 import { stripForProject } from "@/lib/palette";
 import Rail from "@/components/Rail";
 import ProjectView from "@/components/ProjectView";
+import Contact from "@/components/Contact";
 
 export function generateStaticParams() {
   return getSlugs().map((slug) => ({ slug }));
@@ -53,6 +54,8 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
       <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
         <Rail active={category?.slug} />
         <ProjectView project={project} strip={stripForProject(project)} next={next} />
+
+        <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
       </div>
     </main>
   );

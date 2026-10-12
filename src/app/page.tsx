@@ -4,6 +4,7 @@ import { stripsForStills } from "@/lib/palette";
 import Rail from "@/components/Rail";
 import HeroReel from "@/components/HeroReel";
 import WorkRows from "@/components/WorkRows";
+import Contact from "@/components/Contact";
 
 export default function Home() {
   const projects = getProjects();
@@ -26,6 +27,8 @@ export default function Home() {
             <WorkRows projects={projects} />
           </section>
         </div>
+
+        <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
       </div>
     </main>
   );

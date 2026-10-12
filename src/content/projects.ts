@@ -456,7 +456,7 @@ export const SITE = {
   email: "jason@mokobi.digital",
   headline: "Colour grading for film, music video and commercial work.",
   intro:
-    "I grade from a calibrated suite and work remotely with directors and DPs wherever they are, from early look tests through to the final delivery. Send me some footage and we'll work out the look together.",
+    "I grade from a calibrated suite and work remotely with directors and DPs wherever they are, from early look tests through to the final delivery.",
   facility: ["DaVinci Resolve", "Apple M4 Max", "Calibrated HDR reference", "SDR · HDR · DCP", "Remote"],
   regions: ["North America", "Europe", "Oceania"],
   links: {
