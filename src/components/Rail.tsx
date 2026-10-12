@@ -47,7 +47,7 @@ export default function Rail({ active = "all" }: { active?: string }) {
       {/* Sits at the foot of the panel, below the categories. On a phone the rail
           lies across the top, which is the wrong place to ask for the job, so
           the pages mount their own copy at the bottom instead. */}
-      <Contact className="mt-auto pt-8 max-[820px]:hidden" />
+      <Contact className="mt-auto pt-8 max-[820px]:hidden" current={active === "enquire"} />
     </nav>
   );
 }

@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     })),
     { url: `${SITE.domain}/upcoming`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE.domain}/enquire`, lastModified: now, changeFrequency: "yearly", priority: 0.6 },
     ...getSlugs().map((slug) => ({
       url: `${SITE.domain}/work/${slug}`,
       lastModified: now,
