@@ -1,7 +1,7 @@
 import { SITE } from "@/content/projects";
 
-/** How to reach you, in place rather than behind a link: the labelled action,
- *  the address, the profiles.
+/** How to reach you, in place rather than behind a link: the invitation, the
+ *  address it points at, the profiles.
  *
  *  Mounted twice, because the two positions sit in different parts of the
  *  layout and CSS cannot move a box between grid cells. The rail holds it at
@@ -10,6 +10,11 @@ import { SITE } from "@/content/projects";
  *  ever in the accessibility tree. The responsive classes below therefore style
  *  the phone copy only, and the plain ones the desktop copy. */
 export default function Contact({ className = "" }: { className?: string }) {
+  /* The rail narrows to about 118px, which the address does not fit on one
+     line. An address has no break opportunity of its own, so offer one after
+     the @ rather than let it hang over the divider. */
+  const [user, domain] = SITE.email.split("@");
+
   const icon =
     "inline-flex items-center justify-center w-11 h-11 border border-line rounded-[2px] text-halide-dim hover:text-halide hover:border-halide transition-colors";
 
@@ -17,19 +22,16 @@ export default function Contact({ className = "" }: { className?: string }) {
     <div
       className={`flex flex-col items-start gap-2.5 max-[820px]:flex-row max-[820px]:flex-wrap max-[820px]:items-center max-[820px]:gap-x-3 ${className}`}
     >
-      <a
-        href={`mailto:${SITE.email}?subject=${encodeURIComponent("Grading enquiry")}`}
-        className="w-full max-[820px]:w-auto inline-flex items-center justify-between gap-2 min-h-[44px] py-2 px-3 font-mono text-[11px] leading-[1.4] tracking-[.1em] uppercase text-halide border border-safelight/60 rounded-[2px] hover:border-safelight hover:bg-safelight/[0.08] transition-colors"
-      >
-        Enquire
-        <span aria-hidden>→</span>
-      </a>
+      <p className="font-disp text-[13px] leading-[1.45] text-halide-dim max-w-[26ch]">
+        Reach out for your next project
+      </p>
 
       <a
-        href={`mailto:${SITE.email}`}
-        className="font-disp text-[13px] text-halide-dim underline underline-offset-[3px] decoration-halide/25 hover:text-halide hover:decoration-halide/60 transition-colors"
+        href={`mailto:${SITE.email}?subject=${encodeURIComponent("Grading enquiry")}`}
+        className="inline-flex items-center min-h-[44px] font-disp text-[14px] text-halide underline underline-offset-[4px] decoration-halide/40 hover:decoration-halide transition-colors"
       >
-        {SITE.email}
+        {user}@<wbr />
+        {domain}
       </a>
 
       {/* The rail is only about 120px wide at its narrowest, so three targets at
