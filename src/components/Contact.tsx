@@ -15,8 +15,11 @@ export default function Contact({ className = "" }: { className?: string }) {
      the @ rather than let it hang over the divider. */
   const [user, domain] = SITE.email.split("@");
 
+  /* 44px targets on the phone, where a finger has to find them. In the rail
+     three of those will not fit the 118px it narrows to, and a mouse does not
+     need them, so they come down to 36px there. */
   const icon =
-    "inline-flex items-center justify-center w-11 h-11 border border-line rounded-[2px] text-halide-dim hover:text-halide hover:border-halide transition-colors";
+    "inline-flex items-center justify-center w-9 h-9 max-[820px]:w-11 max-[820px]:h-11 border border-line rounded-[2px] text-halide-dim hover:text-halide hover:border-halide transition-colors";
 
   return (
     <div
@@ -37,9 +40,7 @@ export default function Contact({ className = "" }: { className?: string }) {
         {domain}
       </a>
 
-      {/* The rail is only about 120px wide at its narrowest, so three targets at
-          the 44px minimum will not always sit on one line. Let them wrap. */}
-      <div className="flex flex-wrap items-center gap-1.5 max-[820px]:gap-2">
+      <div className="flex items-center gap-1 max-[820px]:gap-2">
         <a
           href={SITE.links.instagram}
           target="_blank"
