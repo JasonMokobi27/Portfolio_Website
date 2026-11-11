@@ -427,11 +427,9 @@ export const UPCOMING: Upcoming[] = [
     ],
   },
   {
-    /* IMDb has it in post-production with no year and no runtime, so neither
-       the kind nor the year it was graded is settled. Both stay out until
-       they are known. */
     title: "Seeking Rapture",
-    credits: { role: "Colourist" },
+    kind: "Feature",
+    credits: { role: "Colourist", year: "2026" },
     imdb: "https://www.imdb.com/title/tt38782213/",
     crew: [
       { role: "Director", names: ["Maddie Ragan"] },
