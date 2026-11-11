@@ -60,10 +60,10 @@ export type Project = {
    shares the one /upcoming page and links out to IMDb for the full record. */
 export type Upcoming = {
   title: string;
-  kind: string;
-  credits: Credit;       // your own credit, with the year you graded it
+  kind?: string;                            // left out while IMDb has not settled it
+  credits: { role: string; year?: string }; // your own credit, and the year you graded it
   crew?: CrewCredit[];
-  cast?: CastCredit[];
+  cast?: CastCredit[];                      // names only here: no character names on upcoming work
   imdb?: string;
 };
 
@@ -386,13 +386,13 @@ export const UPCOMING: Upcoming[] = [
       { role: "Stunt coordinators", names: ["Mark Pettograsso", "Ognjen Topic"] },
     ],
     cast: [
-      { name: "McKinzie Scott", as: "Mask 2" },
+      { name: "McKinzie Scott" },
       { name: "Lou Martini Jr." },
       { name: "Tyler Noble" },
-      { name: "Jacob Marmott", as: "Jason" },
-      { name: "Carolina Burdo Windsor", as: "Julissa" },
-      { name: "Lady Lipka", as: "Coworker" },
-      { name: "Jérémy Falconetti", as: "Judge" },
+      { name: "Jacob Marmott" },
+      { name: "Carolina Burdo Windsor" },
+      { name: "Lady Lipka" },
+      { name: "Jérémy Falconetti" },
     ],
   },
   {
@@ -416,14 +416,45 @@ export const UPCOMING: Upcoming[] = [
       { role: "Re-recording mixer", names: ["Dante Winkler"] },
     ],
     cast: [
-      { name: "Daniel Wilkinson", as: "William 'The Rat' Martin / Dark Mickey" },
-      { name: "Chris Boudreaux", as: "Buster Jones" },
-      { name: "Givanni Gotay", as: "Dark Winnie" },
-      { name: "Lindsey Dresbach", as: "Marlow" },
-      { name: "Rachel Carter", as: "Mama J" },
-      { name: "Dominick Ficco", as: "Max" },
-      { name: "Fayna Sanchez", as: "Clare" },
-      { name: "Robert Laenen", as: "Clay" },
+      { name: "Daniel Wilkinson" },
+      { name: "Chris Boudreaux" },
+      { name: "Givanni Gotay" },
+      { name: "Lindsey Dresbach" },
+      { name: "Rachel Carter" },
+      { name: "Dominick Ficco" },
+      { name: "Fayna Sanchez" },
+      { name: "Robert Laenen" },
+    ],
+  },
+  {
+    /* IMDb has it in post-production with no year and no runtime, so neither
+       the kind nor the year it was graded is settled. Both stay out until
+       they are known. */
+    title: "Seeking Rapture",
+    credits: { role: "Colourist" },
+    imdb: "https://www.imdb.com/title/tt38782213/",
+    crew: [
+      { role: "Director", names: ["Maddie Ragan"] },
+      { role: "Writer", names: ["Maddie Ragan"] },
+      { role: "Executive producer", names: ["Jacob Bowers"] },
+      { role: "Cinematographer", names: ["Mario Ernesto Martinez"] },
+      { role: "Assistant director", names: ["Savanah Dallin"] },
+      { role: "Camera operators", names: ["Brett Dunlap", "Jesse Rose"] },
+      { role: "Gaffer", names: ["Ashna Patil"] },
+      { role: "Sound mixer", names: ["Josiah Graf"] },
+      { role: "Prop maker", names: ["Matt Barrett"] },
+    ],
+    cast: [
+      { name: "Mark Briede" },
+      { name: "Alysa Bryant" },
+      { name: "Kelly Faherty" },
+      { name: "Eric Gilbert" },
+      { name: "Cole Hendricks" },
+      { name: "Sarah Hofaker" },
+      { name: "Amira Kouidri" },
+      { name: "Jane Murdoch" },
+      { name: "Michael Sayfou" },
+      { name: "Yonatan Shaham Vitos" },
     ],
   },
 ];

@@ -27,12 +27,21 @@ export default function UpcomingPage() {
             Upcoming
           </h1>
 
-          {UPCOMING.map((film) => (
+          {UPCOMING.map((film) => {
+            /* A film still in post can have neither year nor kind settled, so
+               the line carries whichever of them is known and goes away when
+               neither is. */
+            const meta = [
+              film.credits.year && `Graded ${film.credits.year}`,
+              film.kind?.toLowerCase(),
+            ].filter(Boolean);
+
+            return (
             <section key={film.title} className="mt-7 pt-7 border-t border-line max-w-[70ch]">
               <h2 className="font-disp font-medium text-[18px] leading-[1.2]">{film.title}</h2>
-              <p className="font-mono text-[11px] text-halide-dim mt-1.5">
-                Graded {film.credits.year}, {film.kind.toLowerCase()}
-              </p>
+              {meta.length > 0 && (
+                <p className="font-mono text-[11px] text-halide-dim mt-1.5">{meta.join(", ")}</p>
+              )}
               <dl className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-x-8 gap-y-4 mt-6">
                 <div>
                   <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
@@ -54,7 +63,7 @@ export default function UpcomingPage() {
                 <div className="mt-7">
                   <h3 className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">Cast</h3>
                   <p className="font-disp text-[14px] leading-[1.6] mt-1.5">
-                    {film.cast.map((c) => (c.as ? `${c.name} (${c.as})` : c.name)).join(" · ")}
+                    {film.cast.map((c) => c.name).join(" · ")}
                   </p>
                 </div>
               ) : null}
@@ -70,7 +79,8 @@ export default function UpcomingPage() {
                 </a>
               )}
             </section>
-          ))}
+            );
+          })}
         </div>
 
         <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
