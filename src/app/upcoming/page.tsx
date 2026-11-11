@@ -28,11 +28,11 @@ export default function UpcomingPage() {
           </h1>
 
           {UPCOMING.map((film) => {
-            /* A film still in post can have neither year nor kind settled, so
-               the line carries whichever of them is known and goes away when
-               neither is. */
+            /* A grade that is still open says so instead of claiming a year it
+               hasn't reached. Either way the line carries only what is known,
+               and goes away when nothing is. */
             const meta = [
-              film.credits.year && `Graded ${film.credits.year}`,
+              film.status ?? (film.credits.year && `Graded ${film.credits.year}`),
               film.kind?.toLowerCase(),
             ].filter(Boolean);
 

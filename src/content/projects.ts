@@ -62,6 +62,9 @@ export type Upcoming = {
   title: string;
   kind?: string;                            // left out while IMDb has not settled it
   credits: { role: string; year?: string }; // your own credit, and the year you graded it
+  /* Set while the grade is still open, and it stands in for the graded year.
+     Clear it when the film is delivered and the year speaks for itself. */
+  status?: string;
   crew?: CrewCredit[];
   cast?: CastCredit[];                      // names only here: no character names on upcoming work
   imdb?: string;
@@ -430,6 +433,7 @@ export const UPCOMING: Upcoming[] = [
     title: "Seeking Rapture",
     kind: "Feature",
     credits: { role: "Colourist", year: "2026" },
+    status: "In post-production",
     imdb: "https://www.imdb.com/title/tt38782213/",
     crew: [
       { role: "Director", names: ["Maddie Ragan"] },
