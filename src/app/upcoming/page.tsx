@@ -37,12 +37,16 @@ export default function UpcomingPage() {
             ].filter(Boolean);
 
             return (
-            <section key={film.title} className="mt-7 pt-7 border-t border-line max-w-[70ch]">
+            <section key={film.title} className="mt-7 pt-7 border-t border-line">
               <h2 className="font-disp font-medium text-[18px] leading-[1.2]">{film.title}</h2>
               {meta.length > 0 && (
                 <p className="font-mono text-[11px] text-halide-dim mt-1.5">{meta.join(", ")}</p>
               )}
-              <dl className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-x-8 gap-y-4 mt-6">
+              {/* Credits run the full width of the page. Each column is a short
+                  label over one or two names, not prose, so there is no measure
+                  to protect: auto-fit takes as many 180px columns as fit, which
+                  is five on a wide screen and one on a phone. */}
+              <dl className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-5 mt-6">
                 <div>
                   <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
                     {film.credits.role}
@@ -62,7 +66,9 @@ export default function UpcomingPage() {
               {film.cast?.length ? (
                 <div className="mt-7">
                   <h3 className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">Cast</h3>
-                  <p className="font-disp text-[14px] leading-[1.6] mt-1.5">
+                  {/* The cast is one long run of text, so unlike the credits it
+                      keeps a reading measure. */}
+                  <p className="font-disp text-[14px] leading-[1.6] mt-1.5 max-w-[70ch]">
                     {film.cast.map((c) => c.name).join(" · ")}
                   </p>
                 </div>
