@@ -146,13 +146,20 @@ export default function ProjectView({
               <dd className="font-disp text-[14px] mt-1">{line.names.join(", ")}</dd>
             </div>
           ))}
-          {tech.map(([key, label]) => (
-            <div key={key}>
-              <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{label}</dt>
-              <dd className="font-disp text-[14px] mt-1">{project.credits[key]}</dd>
-            </div>
-          ))}
         </dl>
+
+        {/* Format and delivery are facts about the picture, not people, so they
+            get a line of their own rather than a cell in among the crew. */}
+        {tech.length > 0 && (
+          <dl className="flex flex-wrap gap-x-8 gap-y-5 mt-7">
+            {tech.map(([key, label]) => (
+              <div key={key} className="min-w-[180px]">
+                <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{label}</dt>
+                <dd className="font-disp text-[14px] mt-1">{project.credits[key]}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
 
         {project.cast?.length ? (
           <div className="mt-7">
