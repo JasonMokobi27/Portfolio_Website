@@ -128,8 +128,12 @@ export default function ProjectView({
         </Link>
       </div>
 
-      <div className="mt-8 pt-6 border-t border-line max-w-[70ch]">
-        <dl className="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-x-8 gap-y-4">
+      {/* Credits run the full width of the page. Each column is a short label
+          over one or two names, not prose, so there is no measure to protect:
+          auto-fit takes as many 180px columns as fit, five on a wide screen
+          down to one on a phone. */}
+      <div className="mt-8 pt-6 border-t border-line">
+        <dl className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-5">
           <div>
             <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
               {project.credits.role}
@@ -153,7 +157,9 @@ export default function ProjectView({
         {project.cast?.length ? (
           <div className="mt-7">
             <h2 className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">Cast</h2>
-            <p className="font-disp text-[14px] leading-[1.6] mt-1.5">
+            {/* The cast is one long run of text, so unlike the credits it
+                keeps a reading measure. */}
+            <p className="font-disp text-[14px] leading-[1.6] mt-1.5 max-w-[70ch]">
               {project.cast.map((c) => (c.as ? `${c.name} (${c.as})` : c.name)).join(" · ")}
             </p>
           </div>
