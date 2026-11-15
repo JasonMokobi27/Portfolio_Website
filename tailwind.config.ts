@@ -8,10 +8,11 @@ const config: Config = {
         ink: "#0E0B08",       // photochemical amber-black
         grain: "#171310",
         halide: "#E8E4DA",    // silver-halide off-white
-        "halide-dim": "#9A968C",
-        safelight: "#C2352A", // darkroom red, accent only
+        "halide-dim": "#A8A498", // secondary text, lifted off #9A968C for contrast
+        safelight: "#C2352A", // darkroom red: borders and marks only
+        "safelight-lit": "#E8695B", // the same red at a contrast that passes as text
         densito: "#3A6E7A",   // densitometer cyan, data
-        line: "rgba(232,228,218,0.14)",
+        line: "rgba(232,228,218,0.16)",
       },
       fontFamily: {
         disp: ["var(--font-disp)", "sans-serif"],

@@ -56,6 +56,37 @@ export function heroStillsFor(projects: Project[]): string[] {
   return [...picked, ...leads];
 }
 
+/* Whole-role matches only. A loose `includes("direct")` also catches "First
+   assistant directors" and "Casting director", which is how the old page
+   description picked the wrong name. */
+const LEAD = {
+  director: /^(directors?|(written|produced) (&|and) directed by|directed by)$/i,
+  dp: /^(cinematographers?|directors? of photography|dp)$/i,
+};
+
+/** The one name worth putting beside a film's title, or nothing if the film
+ *  has no such credit. Never guesses from a near-miss role. */
+export function leadCredit(project: Project, which: keyof typeof LEAD): string | undefined {
+  return project.crew?.find((c) => LEAD[which].test(c.role.trim()))?.names.join(", ");
+}
+
+/** The frame that represents a project: its first still, where it has one. */
+export function leadStill(project: Project): string | undefined {
+  const first = project.stills?.[0];
+  return first?.startsWith("/") ? first : undefined;
+}
+
+/** The next `count` projects after this one, wrapping at the end of the list,
+ *  so the foot of a project page always offers somewhere else to go. */
+export function moreWork(project: Project, count = 3): Project[] {
+  const all = getProjects();
+  const from = all.findIndex((p) => p.slug === project.slug);
+  const rest = all.filter((p) => p.slug !== project.slug);
+  if (rest.length <= count) return rest;
+  const start = from < 0 ? 0 : from;
+  return Array.from({ length: count }, (_, i) => rest[(start + i) % rest.length]);
+}
+
 /** Mux still frame → poster image, no asset upload needed beyond the clip. */
 export function muxPoster(playbackId: string, time = 0): string {
   return `https://image.mux.com/${playbackId}/thumbnail.webp?time=${time}&width=1280`;

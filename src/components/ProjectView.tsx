@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { SITE, type Project } from "@/content/projects";
-import { placeholderStill } from "@/lib/placeholder";
-import { getCategoryOf, muxStill } from "@/lib/projects";
+import { getCategoryOf, leadCredit, muxStill } from "@/lib/projects";
 import ColourStrip from "./ColourStrip";
 import FrameViewer from "./FrameViewer";
+import { SectionLabel } from "./ProjectCard";
 
 /* Shot on / delivered as. The rest of the credit block is the film's crew. */
 const TECH_ROWS: [keyof Project["credits"], string][] = [
@@ -14,136 +15,145 @@ const TECH_ROWS: [keyof Project["credits"], string][] = [
   ["delivery", "Delivery"],
 ];
 
-/** A single project: the frame first, its own colour strip underneath, then
- *  the stills to step through and the few facts worth stating plainly.
+/** A single project: the title, the frame and the stills to step through,
+ *  then the credits in full.
  *  `strip` is sampled on the server so the palette table isn't shipped down. */
-export default function ProjectView({
-  project,
-  strip,
-  next,
-}: {
-  project: Project;
-  strip: string[];
-  next: Project;
-}) {
-  const [thumbs, setThumbs] = useState<string[]>([]);
+export default function ProjectView({ project, strip }: { project: Project; strip: string[] }) {
   const [active, setActive] = useState(0);
   const [playing, setPlaying] = useState(false);
 
+  const stills = project.stills ?? [];
+  const thumbs = stills.map((s) => (s.startsWith("/") ? s : muxStill(s, 0, 1280)));
+
   useEffect(() => {
-    setThumbs(
-      project.stills?.length
-        ? project.stills.map((s) => (s.startsWith("/") ? s : muxStill(s)))
-        : [placeholderStill(project.tone, 240, 135)],
-    );
     setActive(0);
     setPlaying(false);
   }, [project]);
 
   const tech = TECH_ROWS.filter(([key]) => project.credits[key]);
   const category = getCategoryOf(project);
+  const director = leadCredit(project, "director");
+  const dp = leadCredit(project, "dp");
+
+  /* Only what the film actually credits. A missing DP leaves no trace. */
+  const meta = [
+    `${project.credits.year}, ${project.kind.toLowerCase()}`,
+    director && `Dir. ${director}`,
+    dp && `DP ${dp}`,
+  ].filter(Boolean);
 
   return (
-    <div className="min-w-0">
+    <>
       {/* A way back that doesn't depend on the browser's own back button. */}
       <Link
         href={category ? `/${category.slug}` : "/"}
-        className="inline-flex items-center gap-2 mb-3.5 min-h-[44px] font-mono text-[11px] tracking-[.1em] uppercase text-halide-dim border border-line rounded-[2px] px-3.5 hover:text-halide hover:border-halide transition-colors"
+        className="inline-flex items-center gap-2 mt-5 min-h-[44px] font-disp text-[14px] text-halide-dim hover:text-halide transition-colors"
       >
         <span aria-hidden>←</span>
-        Back to {category?.label ?? "all work"}
+        {category?.label ?? "All work"}
       </Link>
 
-      <FrameViewer
-        project={project}
-        stillSrc={thumbs[active]}
-        showNav={!project.muxPlaybackId && thumbs.length > 1}
-        onPrev={() => setActive((i) => (i - 1 + thumbs.length) % thumbs.length)}
-        onNext={() => setActive((i) => (i + 1) % thumbs.length)}
-        playing={playing}
-        onPlay={() => setPlaying(true)}
-      />
-
-      <ColourStrip swatches={strip} className="h-[14px] mt-1.5" />
-
-      {thumbs.length > 1 && (
-        <div className="flex gap-1 mt-1.5 h-[46px] overflow-x-auto">
-          {thumbs.map((src, i) => (
-            <button
-              key={src}
-              type="button"
-              onClick={() => {
-                setActive(i);
-                setPlaying(false);
-              }}
-              aria-label={`Show still ${i + 1}`}
-              aria-current={!playing && i === active}
-              className={`flex-1 min-w-[44px] border rounded-[2px] bg-black bg-cover bg-center transition-opacity ${
-                !playing && i === active
-                  ? "border-safelight opacity-100"
-                  : "border-line opacity-55 hover:opacity-90"
-              }`}
-              style={{ backgroundImage: `url(${src})` }}
-            />
-          ))}
+      <section className="flex flex-wrap items-end justify-between gap-x-16 gap-y-6 pt-7 pb-9">
+        <div className="flex flex-col gap-3 min-w-0">
+          <h1 className="font-disp font-medium text-[clamp(40px,7vw,88px)] leading-[1] tracking-[-.03em]">
+            {project.title}
+          </h1>
+          <span className="font-mono text-[13px] text-halide-dim">{meta.join(" · ")}</span>
         </div>
-      )}
 
-      <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mt-7 pt-7 border-t border-line">
-        {project.title}
-      </h1>
-      <p className="font-mono text-[11px] text-halide-dim mt-1.5">
-        {project.credits.year}, {project.kind.toLowerCase()}
-      </p>
-
-      {project.logline && project.logline !== project.kind && (
-        <p className="text-[15px] leading-[1.55] mt-4 max-w-[58ch]">{project.logline}</p>
-      )}
-
-      <div className="flex gap-2.5 items-center mt-7">
+        {/* The one control for the trailer. The frame itself carries none. */}
         {project.video && (
           <button
             type="button"
             onClick={() => setPlaying((v) => !v)}
-            className="font-mono text-[11px] tracking-[.1em] uppercase border border-safelight/60 text-halide px-4 py-2.5 rounded-[2px] flex items-center gap-2 hover:border-safelight hover:bg-safelight/[0.08] transition-colors"
+            className="inline-flex items-center gap-2.5 min-h-[44px] px-[18px] rounded-[2px] bg-halide text-ink font-disp font-medium text-[15px] hover:bg-white transition-colors"
           >
             {playing ? (
               "Back to stills"
             ) : (
               <>
                 <i
-                  className="block w-0 h-0 border-y-[5px] border-y-transparent border-l-[8px] border-l-safelight"
+                  className="block w-0 h-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-ink"
                   aria-hidden
                 />
-                {project.video.label}
+                Watch {project.video.label.toLowerCase()}
               </>
             )}
           </button>
         )}
-        <Link
-          href={`/work/${next.slug}`}
-          className="font-mono text-[11px] tracking-[.1em] uppercase border border-line text-halide px-4 py-2.5 rounded-[2px] hover:border-halide hover:bg-halide/[0.04] transition-colors"
-        >
-          Next: {next.title} →
-        </Link>
-      </div>
+      </section>
 
-      {/* Credits run the full width of the page. Each column is a short label
-          over one or two names, not prose, so there is no measure to protect:
-          auto-fit takes as many 180px columns as fit, five on a wide screen
-          down to one on a phone. */}
-      <div className="mt-8 pt-6 border-t border-line">
-        <dl className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-5">
-          <div>
-            <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
+      <FrameViewer
+        project={project}
+        stillSrc={thumbs[active]}
+        stillAlt={`${project.title}, still ${active + 1} of ${thumbs.length}`}
+        index={active}
+        total={thumbs.length}
+        showNav={!project.muxPlaybackId && thumbs.length > 1}
+        onPrev={() => setActive((i) => (i - 1 + thumbs.length) % thumbs.length)}
+        onNext={() => setActive((i) => (i + 1) % thumbs.length)}
+        playing={playing}
+      />
+
+      <ColourStrip swatches={strip} className="h-[14px] mt-1" />
+
+      {thumbs.length > 1 && (
+        <div className="flex gap-2.5 overflow-x-auto pt-3.5 pb-1.5">
+          {thumbs.map((src, i) => {
+            const current = !playing && i === active;
+            return (
+              <button
+                key={src}
+                type="button"
+                onClick={() => {
+                  setActive(i);
+                  setPlaying(false);
+                }}
+                aria-label={`Show still ${i + 1}`}
+                aria-current={current}
+                className="relative flex-[0_0_132px] aspect-video rounded-[2px] overflow-hidden bg-black"
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  aria-hidden
+                  fill
+                  sizes="132px"
+                  className={`object-cover transition-opacity ${
+                    current ? "opacity-100" : "opacity-[0.72] hover:opacity-95"
+                  }`}
+                />
+                {current && (
+                  <span
+                    aria-hidden
+                    className="absolute inset-0 rounded-[2px] ring-2 ring-safelight ring-offset-2 ring-offset-ink"
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      <section className="flex flex-col gap-[22px] pt-12">
+        <SectionLabel>Credits</SectionLabel>
+
+        {/* Credits run the full width of the page. Each column is a short label
+            over one or two names, not prose, so there is no measure to protect:
+            auto-fit takes as many 210px columns as fit. */}
+        <dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,210px),1fr))] gap-x-7 gap-y-6">
+          <div className="flex flex-col gap-[5px]">
+            <dt className="font-mono text-[12px] tracking-[.1em] uppercase text-safelight-lit">
               {project.credits.role}
             </dt>
-            <dd className="font-disp text-[14px] mt-1">{SITE.name}</dd>
+            <dd className="font-disp text-[16px] leading-[1.35]">{SITE.name}</dd>
           </div>
           {(project.crew ?? []).map((line) => (
-            <div key={line.role}>
-              <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{line.role}</dt>
-              <dd className="font-disp text-[14px] mt-1">{line.names.join(", ")}</dd>
+            <div key={line.role} className="flex flex-col gap-[5px]">
+              <dt className="font-mono text-[12px] tracking-[.1em] uppercase text-halide-dim">
+                {line.role}
+              </dt>
+              <dd className="font-disp text-[16px] leading-[1.35]">{line.names.join(", ")}</dd>
             </div>
           ))}
         </dl>
@@ -151,22 +161,23 @@ export default function ProjectView({
         {/* Format and delivery are facts about the picture, not people, so they
             get a line of their own rather than a cell in among the crew. */}
         {tech.length > 0 && (
-          <dl className="flex flex-wrap gap-x-8 gap-y-5 mt-7">
+          <dl className="flex flex-wrap gap-x-7 gap-y-6">
             {tech.map(([key, label]) => (
-              <div key={key} className="min-w-[180px]">
-                <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">{label}</dt>
-                <dd className="font-disp text-[14px] mt-1">{project.credits[key]}</dd>
+              <div key={key} className="flex flex-col gap-[5px] min-w-[210px]">
+                <dt className="font-mono text-[12px] tracking-[.1em] uppercase text-halide-dim">
+                  {label}
+                </dt>
+                <dd className="font-disp text-[16px] leading-[1.35]">{project.credits[key]}</dd>
               </div>
             ))}
           </dl>
         )}
 
         {project.cast?.length ? (
-          <div className="mt-7">
-            <h2 className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">Cast</h2>
-            {/* The cast is one long run of text, so unlike the credits it
-                keeps a reading measure. */}
-            <p className="font-disp text-[14px] leading-[1.6] mt-1.5 max-w-[70ch]">
+          <div className="flex flex-col gap-[5px]">
+            <h3 className="font-mono text-[12px] tracking-[.1em] uppercase text-halide-dim">Cast</h3>
+            {/* One long run of text, so unlike the credits it keeps a measure. */}
+            <p className="font-disp text-[16px] leading-[1.6] max-w-[70ch]">
               {project.cast.map((c) => (c.as ? `${c.name} (${c.as})` : c.name)).join(" · ")}
             </p>
           </div>
@@ -177,12 +188,12 @@ export default function ProjectView({
             href={project.imdb}
             target="_blank"
             rel="noopener"
-            className="inline-block font-mono text-[11px] tracking-[.1em] uppercase text-densito mt-7 hover:text-halide transition-colors"
+            className="inline-flex items-center self-start min-h-[44px] font-disp text-[15px] text-halide underline underline-offset-[4px] decoration-halide/40 hover:decoration-halide transition-colors"
           >
-            Full credits on IMDb ↗
+            Cast and full credits on IMDb ↗
           </a>
         )}
-      </div>
-    </div>
+      </section>
+    </>
   );
 }

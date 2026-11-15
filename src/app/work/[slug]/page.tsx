@@ -1,11 +1,19 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import { getCategoryOf, getProject, getProjects, getProjectsByCategory, getSlugs, muxPoster } from "@/lib/projects";
+import {
+  getCategoryOf,
+  getProject,
+  getSlugs,
+  leadCredit,
+  leadStill,
+  moreWork,
+  muxPoster,
+} from "@/lib/projects";
 import { SITE } from "@/content/projects";
 import { stripForProject } from "@/lib/palette";
-import Rail from "@/components/Rail";
+import Shell from "@/components/Shell";
 import ProjectView from "@/components/ProjectView";
-import Contact from "@/components/Contact";
+import { ProjectGrid, SectionLabel } from "@/components/ProjectCard";
 
 export function generateStaticParams() {
   return getSlugs().map((slug) => ({ slug }));
@@ -16,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const p = getProject(slug);
   if (!p) return {};
   const title = `${p.title} · ${p.kind}`;
-  const director = p.crew?.find((c) => c.role.toLowerCase().includes("direct"))?.names.join(", ");
+  const director = leadCredit(p, "director");
   const description = [
     p.logline !== p.kind ? p.logline : null,
     director ? `Directed by ${director}.` : null,
@@ -24,7 +32,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   ]
     .filter(Boolean)
     .join(" ");
-  const image = p.muxPlaybackId ? muxPoster(p.muxPlaybackId, p.posterTime ?? 0) : undefined;
+  /* A real frame from the film, so a shared link shows the work rather than
+     nothing. Mux poster where there is a clip, the lead still otherwise. */
+  const image = p.muxPlaybackId ? muxPoster(p.muxPlaybackId, p.posterTime ?? 0) : leadStill(p);
   return {
     title,
     description,
@@ -44,19 +54,18 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
   if (!project) notFound();
 
   const category = getCategoryOf(project);
-  const scope = category ? getProjectsByCategory(category.slug) : getProjects();
-  const list = scope.some((p) => p.slug === slug) ? scope : getProjects();
-  const idx = list.findIndex((p) => p.slug === slug);
-  const next = list[(idx + 1) % list.length] ?? project;
+  const more = moreWork(project);
 
   return (
-    <main className="min-h-[100dvh] p-[var(--pad)]">
-      <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
-        <Rail active={category?.slug} />
-        <ProjectView project={project} strip={stripForProject(project)} next={next} />
+    <Shell active={category?.slug}>
+      <ProjectView project={project} strip={stripForProject(project)} />
 
-        <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
-      </div>
-    </main>
+      {more.length > 0 && (
+        <section className="flex flex-col gap-[18px] pt-16">
+          <SectionLabel>More work</SectionLabel>
+          <ProjectGrid projects={more} />
+        </section>
+      )}
+    </Shell>
   );
 }

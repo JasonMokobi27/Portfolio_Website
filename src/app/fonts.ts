@@ -6,7 +6,7 @@
  * generated font classes. */
 import { Archivo, Newsreader, JetBrains_Mono } from "next/font/google";
 
-const disp = Archivo({ subsets: ["latin"], weight: ["500", "600", "700"], variable: "--font-disp", display: "swap" });
+const disp = Archivo({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-disp", display: "swap" });
 const serif = Newsreader({ subsets: ["latin"], style: ["normal", "italic"], variable: "--font-serif", display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono", display: "swap" });
 

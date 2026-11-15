@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import type { Project } from "@/content/projects";
 import { muxPoster } from "@/lib/projects";
 
@@ -10,27 +11,36 @@ const MuxPlayer = dynamic(() => import("@mux/mux-player-react"), { ssr: false })
 
 /** The frame itself. A YouTube trailer or full film once play is pressed,
  *  a Mux clip when a playbackId exists, otherwise the still passed down by
- *  ProjectView. Prev/next arrows step through the stills. */
+ *  ProjectView. Prev/next arrows step through the stills, and the counter
+ *  says where in them you are.
+ *
+ *  There is no play button over the frame: the page carries one beside the
+ *  title, and two controls for the same trailer read as two trailers. */
 export default function FrameViewer({
   project,
   stillSrc,
+  stillAlt,
+  index,
+  total,
   showNav,
   onPrev,
   onNext,
   playing,
-  onPlay,
 }: {
   project: Project;
   stillSrc?: string;
+  stillAlt?: string;
+  index?: number;
+  total?: number;
   showNav?: boolean;
   onPrev?: () => void;
   onNext?: () => void;
   playing?: boolean;
-  onPlay?: () => void;
 }) {
   const hasClip = Boolean(project.muxPlaybackId);
   const video = project.video;
   const isPlaying = Boolean(playing && video);
+  const pad = (n: number) => String(n).padStart(2, "0");
 
   /* The frame owns its own ratio off a definite width. Leaving the width to be
      inferred from flex-basis plus aspect-ratio collapsed it to a sliver in
@@ -59,10 +69,17 @@ export default function FrameViewer({
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%" }}
         />
       ) : (
-        <div
-          className="absolute inset-0 bg-cover bg-center transition-opacity duration-500"
-          style={{ backgroundImage: stillSrc ? `url(${stillSrc})` : undefined }}
-        />
+        stillSrc && (
+          <Image
+            key={stillSrc}
+            src={stillSrc}
+            alt={stillAlt ?? ""}
+            fill
+            sizes="(max-width: 860px) 100vw, 1300px"
+            priority
+            className="object-cover"
+          />
+        )
       )}
 
       {/* film perforations, stood down while the player owns the frame */}
@@ -73,45 +90,37 @@ export default function FrameViewer({
         </>
       )}
 
-      {/* play affordance over the still, so motion is one click in */}
-      {video && !isPlaying && (
-        <button
-          type="button"
-          onClick={onPlay}
-          aria-label={`Play ${video.label.toLowerCase()}`}
-          className="absolute inset-0 z-[7] flex items-center justify-center group bg-ink/0 hover:bg-ink/25 transition-colors"
-        >
-          <span className="flex items-center gap-2.5 font-mono text-[11px] tracking-[.14em] uppercase text-halide px-4 py-3 rounded-[2px] bg-ink/55 backdrop-blur-[3px] border border-halide/25 group-hover:border-safelight transition-colors">
-            <i className="block w-0 h-0 border-y-[6px] border-y-transparent border-l-[10px] border-l-safelight" aria-hidden />
-            {video.label}
-          </span>
-        </button>
-      )}
-
       {!hasClip && !isPlaying && showNav && (
         <>
           <button
             type="button"
             onClick={onPrev}
             aria-label="Previous still"
-            className="absolute left-3 top-1/2 -translate-y-1/2 z-[9] w-9 h-9 flex items-center justify-center rounded-full bg-ink/50 backdrop-blur-[3px] text-halide text-lg hover:bg-ink/70"
+            className="absolute left-4 top-1/2 -translate-y-1/2 z-[9] w-11 h-11 flex items-center justify-center rounded-full border border-halide/40 bg-ink/70 backdrop-blur-[3px] text-halide text-lg hover:border-halide"
           >
-            ‹
+            <span aria-hidden>‹</span>
           </button>
           <button
             type="button"
             onClick={onNext}
             aria-label="Next still"
-            className="absolute right-3 top-1/2 -translate-y-1/2 z-[9] w-9 h-9 flex items-center justify-center rounded-full bg-ink/50 backdrop-blur-[3px] text-halide text-lg hover:bg-ink/70"
+            className="absolute right-4 top-1/2 -translate-y-1/2 z-[9] w-11 h-11 flex items-center justify-center rounded-full border border-halide/40 bg-ink/70 backdrop-blur-[3px] text-halide text-lg hover:border-halide"
           >
-            ›
+            <span aria-hidden>›</span>
           </button>
         </>
       )}
 
+      {/* where you are in the stills */}
+      {!isPlaying && !hasClip && typeof index === "number" && typeof total === "number" && total > 1 && (
+        <span className="absolute right-4 bottom-3.5 z-[8] font-mono text-[12px] text-halide bg-ink/72 px-2 py-1 rounded-[2px] pointer-events-none">
+          {pad(index + 1)} / {pad(total)}
+        </span>
+      )}
+
       {/* motion / still badge */}
       {!isPlaying && (
-        <span className="absolute top-3.5 left-4 z-[8] font-mono text-[10px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-[2px] text-halide bg-ink/50 backdrop-blur-[3px] pointer-events-none">
+        <span className="absolute top-3.5 left-4 z-[8] font-mono text-[12px] tracking-[.16em] uppercase px-2.5 py-1.5 rounded-[2px] text-halide bg-ink/50 backdrop-blur-[3px] pointer-events-none">
           {hasClip ? (
             <>
               <i className="inline-block w-1.5 h-1.5 rounded-full bg-safelight mr-1.5 align-middle animate-pulse" />

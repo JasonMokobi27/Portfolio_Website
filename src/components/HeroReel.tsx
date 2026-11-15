@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
 
 const ROTATE_MS = 5000;
@@ -21,12 +22,20 @@ export default function HeroReel({ stills, segments }: { stills: string[]; segme
 
   return (
     <div>
-      <div className="relative aspect-[16/6.4] max-[820px]:aspect-[16/9] bg-black border border-line rounded-[3px] overflow-hidden">
+      <div className="relative w-full aspect-[16/6.4] max-[820px]:aspect-video bg-black border border-line rounded-[3px] overflow-hidden">
         {stills.map((src, i) => (
-          <div
+          /* Real images, so each frame is served at the width it is shown at
+             rather than as a full-size JPEG behind a CSS background. */
+          <Image
             key={src}
-            className="absolute inset-0 bg-cover bg-center transition-opacity duration-[1200ms]"
-            style={{ backgroundImage: `url(${src})`, opacity: i === active ? 1 : 0 }}
+            src={src}
+            alt=""
+            aria-hidden
+            fill
+            sizes="100vw"
+            priority={i === 0}
+            className="object-cover transition-opacity duration-[1200ms]"
+            style={{ opacity: i === active ? 1 : 0 }}
           />
         ))}
         <div className="absolute inset-0 bg-gradient-to-t from-ink/55 via-transparent to-transparent" />
@@ -41,7 +50,10 @@ export default function HeroReel({ stills, segments }: { stills: string[]; segme
             onClick={() => setActive(i)}
             aria-label={`Show frame ${i + 1}`}
             aria-current={i === active}
-            className={`flex-1 flex overflow-hidden rounded-[2px] transition-opacity ${
+            /* The bar stays 18px, but the `after` gives each segment a 44px
+               target without pushing the layout around: a finger needs that
+               and twelve 18px strips do not give it. */
+            className={`relative flex-1 flex overflow-hidden rounded-[2px] transition-opacity after:absolute after:inset-x-0 after:-top-[13px] after:-bottom-[13px] after:content-[''] ${
               i === active ? "opacity-100 ring-1 ring-halide/70" : "opacity-45 hover:opacity-80"
             }`}
           >
@@ -52,9 +64,11 @@ export default function HeroReel({ stills, segments }: { stills: string[]; segme
         ))}
       </div>
 
-      <div className="flex justify-between font-mono text-[11px] text-halide-dim mt-2">
-        <span>Every colour here is taken from the films themselves</span>
-        <span>
+      <div className="flex justify-between gap-4 font-mono text-[12px] text-halide-dim mt-2">
+        {/* The note is an aside, and on a phone it wraps into the counter and
+            makes a mess of both. The counter is the part that does work. */}
+        <span className="max-[640px]:hidden">Every colour here is taken from the films themselves</span>
+        <span className="whitespace-nowrap max-[640px]:ml-auto">
           {active + 1} / {stills.length}
         </span>
       </div>

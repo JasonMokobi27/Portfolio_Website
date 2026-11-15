@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SITE, UPCOMING } from "@/content/projects";
-import Rail from "@/components/Rail";
-import Contact from "@/components/Contact";
+import Shell from "@/components/Shell";
+import { SectionLabel } from "@/components/ProjectCard";
 
 export const metadata: Metadata = {
   title: "Upcoming",
@@ -13,84 +13,86 @@ export const metadata: Metadata = {
   },
 };
 
-/** Everything graded but not yet cleared shares this one page. There are no
- *  frames and no colour strips here on purpose: showing a look for a film the
- *  viewer can't see would be inventing one. */
+/** Everything graded but not yet cleared, and everything still being graded,
+ *  shares this one page. There are no frames and no colour strips here on
+ *  purpose: showing a look for a film the viewer can't see would be inventing
+ *  one. */
 export default function UpcomingPage() {
   return (
-    <main className="min-h-[100dvh] p-[var(--pad)]">
-      <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
-        <Rail active="upcoming" />
+    <Shell active="upcoming">
+      {/* No standfirst here, so the title needs none of the two-column room
+          the other pages give theirs. */}
+      <h1 className="font-disp font-medium text-[clamp(36px,5vw,64px)] leading-[1.05] tracking-[-.025em] pt-[72px] max-[820px]:pt-12">
+        Upcoming
+      </h1>
 
-        <div className="min-w-0">
-          <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em]">
-            Upcoming
-          </h1>
+      {UPCOMING.map((film) => {
+        /* A grade that is still open says so instead of claiming a year it
+           hasn't reached. Either way the line carries only what is known,
+           and goes away when nothing is. */
+        const meta = [
+          film.status ?? (film.credits.year && `Graded ${film.credits.year}`),
+          film.kind?.toLowerCase(),
+        ].filter(Boolean);
 
-          {UPCOMING.map((film) => {
-            /* A grade that is still open says so instead of claiming a year it
-               hasn't reached. Either way the line carries only what is known,
-               and goes away when nothing is. */
-            const meta = [
-              film.status ?? (film.credits.year && `Graded ${film.credits.year}`),
-              film.kind?.toLowerCase(),
-            ].filter(Boolean);
-
-            return (
-            <section key={film.title} className="mt-7 pt-7 border-t border-line">
-              <h2 className="font-disp font-medium text-[18px] leading-[1.2]">{film.title}</h2>
+        return (
+          <section key={film.title} className="flex flex-col gap-[22px] pt-10 mt-12 border-t border-line">
+            <div className="flex flex-col gap-2">
+              <h2 className="font-disp font-medium text-[clamp(24px,3vw,34px)] leading-[1.1] tracking-[-.02em]">
+                {film.title}
+              </h2>
               {meta.length > 0 && (
-                <p className="font-mono text-[11px] text-halide-dim mt-1.5">{meta.join(", ")}</p>
-              )}
-              {/* Credits run the full width of the page. Each column is a short
-                  label over one or two names, not prose, so there is no measure
-                  to protect: auto-fit takes as many 180px columns as fit, which
-                  is five on a wide screen and one on a phone. */}
-              <dl className="grid grid-cols-[repeat(auto-fit,minmax(180px,1fr))] gap-x-8 gap-y-5 mt-6">
-                <div>
-                  <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-safelight">
-                    {film.credits.role}
-                  </dt>
-                  <dd className="font-disp text-[14px] mt-1">{SITE.name}</dd>
-                </div>
-                {(film.crew ?? []).map((line) => (
-                  <div key={line.role}>
-                    <dt className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">
-                      {line.role}
-                    </dt>
-                    <dd className="font-disp text-[14px] mt-1">{line.names.join(", ")}</dd>
-                  </div>
-                ))}
-              </dl>
-
-              {film.cast?.length ? (
-                <div className="mt-7">
-                  <h3 className="font-mono text-[10px] tracking-[.12em] uppercase text-halide-dim">Cast</h3>
-                  {/* The cast is one long run of text, so unlike the credits it
-                      keeps a reading measure. */}
-                  <p className="font-disp text-[14px] leading-[1.6] mt-1.5 max-w-[70ch]">
-                    {film.cast.map((c) => c.name).join(" · ")}
-                  </p>
-                </div>
-              ) : null}
-
-              {film.imdb && (
-                <a
-                  href={film.imdb}
-                  target="_blank"
-                  rel="noopener"
-                  className="inline-block font-mono text-[11px] tracking-[.1em] uppercase text-densito mt-7 hover:text-halide transition-colors"
+                <span
+                  className={`font-mono text-[12px] tracking-[.1em] uppercase ${
+                    film.status ? "text-safelight-lit" : "text-halide-dim"
+                  }`}
                 >
-                  Full credits on IMDb ↗
-                </a>
+                  {meta.join(", ")}
+                </span>
               )}
-            </section>
-            );
-          })}
-        </div>
+            </div>
 
-        <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
-      </div>
-    </main>
+            <dl className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,210px),1fr))] gap-x-7 gap-y-6">
+              <div className="flex flex-col gap-[5px]">
+                <dt className="font-mono text-[12px] tracking-[.1em] uppercase text-safelight-lit">
+                  {film.credits.role}
+                </dt>
+                <dd className="font-disp text-[16px] leading-[1.35]">{SITE.name}</dd>
+              </div>
+              {(film.crew ?? []).map((line) => (
+                <div key={line.role} className="flex flex-col gap-[5px]">
+                  <dt className="font-mono text-[12px] tracking-[.1em] uppercase text-halide-dim">
+                    {line.role}
+                  </dt>
+                  <dd className="font-disp text-[16px] leading-[1.35]">{line.names.join(", ")}</dd>
+                </div>
+              ))}
+            </dl>
+
+            {film.cast?.length ? (
+              <div className="flex flex-col gap-[5px]">
+                <SectionLabel>Cast</SectionLabel>
+                {/* Names only: the viewer can't see the film, so a character
+                    name is just plot they have not been shown. */}
+                <p className="font-disp text-[16px] leading-[1.6] max-w-[70ch]">
+                  {film.cast.map((c) => c.name).join(" · ")}
+                </p>
+              </div>
+            ) : null}
+
+            {film.imdb && (
+              <a
+                href={film.imdb}
+                target="_blank"
+                rel="noopener"
+                className="inline-flex items-center self-start min-h-[44px] font-disp text-[15px] text-halide underline underline-offset-[4px] decoration-halide/40 hover:decoration-halide transition-colors"
+              >
+                Full credits on IMDb ↗
+              </a>
+            )}
+          </section>
+        );
+      })}
+    </Shell>
   );
 }

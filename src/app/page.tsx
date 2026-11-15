@@ -1,35 +1,88 @@
+import Link from "next/link";
 import { getProjects } from "@/lib/projects";
-import { SITE, HERO_STILLS } from "@/content/projects";
+import { SITE, HERO_STILLS, UPCOMING } from "@/content/projects";
 import { stripsForStills } from "@/lib/palette";
-import Rail from "@/components/Rail";
+import Shell from "@/components/Shell";
 import HeroReel from "@/components/HeroReel";
-import WorkRows from "@/components/WorkRows";
-import Contact from "@/components/Contact";
+import { ProjectGrid, SectionLabel } from "@/components/ProjectCard";
+
+/* The two that lead the page. Everything else follows in the grid below. */
+const FEATURED = ["rockweed", "lars-mikael"];
 
 export default function Home() {
   const projects = getProjects();
+  const featured = FEATURED.map((slug) => projects.find((p) => p.slug === slug)).filter(
+    (p): p is NonNullable<typeof p> => Boolean(p),
+  );
+  const rest = projects.filter((p) => !FEATURED.includes(p.slug));
+
   return (
-    <main className="min-h-[100dvh] p-[var(--pad)]">
-      <div className="mx-auto max-w-[1400px] grid grid-cols-[clamp(150px,15vw,200px)_minmax(0,1fr)] max-[820px]:grid-cols-1 gap-8 max-[820px]:gap-6">
-        <Rail active="all" />
+    <Shell active="all">
+      <section className="flex flex-wrap items-center gap-x-16 gap-y-8 pt-[72px] pb-14 max-[820px]:pt-12 max-[820px]:pb-10">
+        <h1 className="flex-[1_1_520px] font-disp font-medium text-[clamp(36px,5vw,64px)] leading-[1.05] tracking-[-.025em]">
+          {SITE.headline}
+        </h1>
+        <p className="flex-[1_1_320px] font-serif text-[19px] leading-[1.5] text-halide-dim">
+          {SITE.intro}
+        </p>
+      </section>
 
-        <div className="min-w-0">
-          <HeroReel stills={HERO_STILLS} segments={stripsForStills(HERO_STILLS)} />
+      {/* Kept from the old home page: the strongest frames rotating, with each
+          film's own colour under them doubling as the scrubber. */}
+      <HeroReel stills={HERO_STILLS} segments={stripsForStills(HERO_STILLS)} />
 
-          <section className="mt-7 pt-7 border-t border-line">
-            <h1 className="font-disp font-medium text-[clamp(20px,2.5vw,30px)] leading-[1.15] tracking-[-.01em] mb-2.5 max-w-[22ch]">
-              {SITE.headline}
-            </h1>
-            <p className="text-[15px] leading-[1.55] text-halide-dim max-w-[58ch]">{SITE.intro}</p>
-          </section>
+      {featured.length > 0 && (
+        <section className="flex flex-col gap-[18px] pt-16">
+          <SectionLabel>Features and series</SectionLabel>
+          <ProjectGrid projects={featured} featured />
+        </section>
+      )}
 
-          <section className="mt-7 pt-7 border-t border-line">
-            <WorkRows projects={projects} />
-          </section>
-        </div>
+      <section className="flex flex-col gap-[18px] pt-16">
+        <SectionLabel>All work</SectionLabel>
+        <ProjectGrid projects={rest} />
+      </section>
 
-        <Contact className="min-[821px]:hidden mt-8 pt-6 border-t border-line" />
-      </div>
-    </main>
+      {UPCOMING.length > 0 && (
+        <section className="flex flex-col gap-[18px] pt-[72px]">
+          <SectionLabel>Upcoming</SectionLabel>
+          <div className="flex flex-wrap gap-4">
+            {UPCOMING.map((film) => {
+              const director = film.crew?.find((c) => /^directors?$/i.test(c.role))?.names.join(", ");
+              const open = Boolean(film.status);
+              return (
+                <Link
+                  key={film.title}
+                  href="/upcoming"
+                  className="flex-[1_1_240px] flex flex-col gap-1.5 p-[18px] border border-line rounded-[3px] hover:border-halide/40 transition-colors"
+                >
+                  <span
+                    className={`font-mono text-[12px] tracking-[.1em] uppercase ${
+                      open ? "text-safelight-lit" : "text-halide-dim"
+                    }`}
+                  >
+                    {[film.status ?? (film.credits.year && `Graded ${film.credits.year}`), film.kind?.toLowerCase()]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </span>
+                  <span className="font-disp font-medium text-[20px] leading-[1.2]">{film.title}</span>
+                  {director && (
+                    <span className="font-serif text-[16px] text-halide-dim">Dir. {director}</span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
+    </Shell>
   );
 }
+
+export const metadata = {
+  alternates: { canonical: "/" },
+  openGraph: {
+    url: SITE.domain,
+    images: HERO_STILLS[0] ? [{ url: HERO_STILLS[0], width: 1200, height: 630 }] : undefined,
+  },
+};
