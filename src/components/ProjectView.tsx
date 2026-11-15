@@ -119,6 +119,7 @@ export default function ProjectView({ project, strip }: { project: Project; stri
                   aria-hidden
                   fill
                   sizes="132px"
+                  quality={94}
                   className={`object-cover transition-opacity ${
                     current ? "opacity-100" : "opacity-[0.72] hover:opacity-95"
                   }`}

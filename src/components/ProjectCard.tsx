@@ -29,7 +29,17 @@ export default function ProjectCard({
             src={src}
             alt={`Still from ${project.title}`}
             fill
-            sizes={featured ? "(max-width: 860px) 100vw, 44vw" : "(max-width: 560px) 100vw, (max-width: 1100px) 50vw, 30vw"}
+            /* Measured against the real columns: two of ~628px when featured,
+               three of ~410px otherwise, both capped once the page stops
+               growing at 1400px. */
+            sizes={
+              featured
+                ? "(max-width: 860px) 100vw, (max-width: 1512px) 46vw, 640px"
+                : "(max-width: 560px) 100vw, (max-width: 1100px) 50vw, (max-width: 1512px) 32vw, 420px"
+            }
+            /* A card is where most visitors meet a grade, so it is encoded at
+               the same quality as the full frame rather than as a thumbnail. */
+            quality={94}
             className="object-cover transition-transform duration-500 group-hover:scale-[1.015]"
           />
         )}

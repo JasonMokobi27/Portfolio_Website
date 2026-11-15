@@ -32,7 +32,11 @@ export default function HeroReel({ stills, segments }: { stills: string[]; segme
             alt=""
             aria-hidden
             fill
-            sizes="100vw"
+            /* The page is capped at 1400px with a 56px gutter, so the frame
+               stops growing at 1288. Saying 100vw past that would have the
+               optimizer serve a wider file than the box ever paints. */
+            sizes="(max-width: 1512px) 100vw, 1300px"
+            quality={94}
             priority={i === 0}
             className="object-cover transition-opacity duration-[1200ms]"
             style={{ opacity: i === active ? 1 : 0 }}

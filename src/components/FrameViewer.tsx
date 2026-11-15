@@ -75,7 +75,9 @@ export default function FrameViewer({
             src={stillSrc}
             alt={stillAlt ?? ""}
             fill
-            sizes="(max-width: 860px) 100vw, 1300px"
+            sizes="(max-width: 860px) 100vw, (max-width: 1500px) 94vw, 1300px"
+            /* The largest the grade is ever shown, so it is encoded highest. */
+            quality={94}
             priority
             className="object-cover"
           />
